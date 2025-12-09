@@ -13,7 +13,7 @@
         :root {
             --bg-color: #121212;
             --text-color: #ffffff;
-            --accent-color: #1DB954; /* 스포티파이 그린 */
+            --accent-color: #1DB954;
         }
         
         body {
@@ -23,7 +23,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased; /* 모바일에서 폰트 부드럽게 */
+            -webkit-font-smoothing: antialiased;
         }
 
         /* === 네비게이션 === */
@@ -31,20 +31,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 30px; /* 모바일 고려해 여백 조정 */
-            background-color: rgba(18, 18, 18, 0.95); /* 가독성 위해 투명도 조절 */
+            padding: 15px 30px;
+            background-color: rgba(18, 18, 18, 0.8);
             position: fixed;
             width: 100%;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
             box-sizing: border-box;
-            backdrop-filter: blur(5px); /* 아이폰 블러 효과 */
+            backdrop-filter: blur(10px);
         }
 
         .logo { 
             font-size: 1.3rem; 
             font-weight: 900; 
             letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .nav-links a { 
@@ -54,40 +55,78 @@
             font-weight: 500; 
             font-size: 0.95rem;
             transition: color 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .nav-links a:hover { color: var(--accent-color); }
 
-        /* === 히어로 섹션 (내 사진 배경) === */
+        /* === 히어로 섹션 === */
         .hero {
-            height: 85vh; /* 화면 높이의 85% */
-            min-height: 500px;
+            position: relative;
+            height: 100vh;
+            width: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .hero-video-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .hero-video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.2);
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
             text-align: center;
             padding: 20px;
-            /* 배경 이미지 (기존 이미지 유지) */
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            margin-top: 0; /* 네비게이션 뒤로 배경이 깔리게 0으로 수정 */
         }
 
         .hero h1 { 
-            font-size: 3.5rem; 
-            margin-bottom: 15px; 
-            font-weight: 800;
+            font-size: 4rem; 
+            margin: 0 0 10px 0; 
+            font-weight: 900;
             line-height: 1.1;
-            padding-top: 60px; /* 네비게이션에 가리지 않게 */
+            text-shadow: 0 4px 10px rgba(0,0,0,0.7);
         }
         
         .hero p { 
-            font-size: 1.4rem; 
-            color: #e0e0e0; 
-            margin-bottom: 30px; 
-            font-weight: 300;
+            font-size: 1.5rem; 
+            color: #f0f0f0; 
+            margin: 0; 
+            font-weight: 400;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.7);
         }
 
         /* === 음악 섹션 === */
@@ -95,6 +134,9 @@
             padding: 80px 20px;
             max-width: 1000px;
             margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            background-color: var(--bg-color);
         }
 
         .section-title {
@@ -105,7 +147,6 @@
             position: relative;
         }
         
-        /* 제목 밑줄 효과 */
         .section-title::after {
             content: '';
             display: block;
@@ -118,7 +159,7 @@
 
         .music-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* PC에서는 2열 */
+            grid-template-columns: 1fr 1fr;
             gap: 40px;
         }
 
@@ -126,27 +167,12 @@
             background: #1e1e1e;
             padding: 25px;
             border-radius: 12px;
-            transition: transform 0.3s ease; /* 마우스 올렸을 때 살짝 뜨는 효과 */
+            transition: transform 0.3s ease;
         }
         
-        .music-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .music-card h3 { 
-            margin-top: 0; 
-            margin-bottom: 15px; 
-            color: var(--accent-color); 
-            font-size: 1.3rem;
-        }
-
-        .music-description {
-            margin-top: 15px;
-            color: #bbb; /* 설명 글씨 색상 조금 더 밝게 */
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
+        .music-card:hover { transform: translateY(-5px); }
+        .music-card h3 { margin-top: 0; margin-bottom: 15px; color: var(--accent-color); font-size: 1.3rem; }
+        .music-description { margin-top: 15px; color: #bbb; font-size: 0.95rem; line-height: 1.5; }
         .center-content { text-align: center; }
         iframe { border: none; border-radius: 8px; }
 
@@ -164,7 +190,7 @@
             justify-content: center;
             gap: 20px;
             margin-top: 40px;
-            flex-wrap: wrap; /* 모바일에서 줄바꿈 허용 */
+            flex-wrap: wrap;
         }
 
         .contact-links a {
@@ -172,10 +198,9 @@
             text-decoration: none;
             padding: 15px 40px;
             background: #2a2a2a;
-            border-radius: 50px; /* 둥근 버튼 스타일 */
+            border-radius: 50px;
             transition: all 0.3s ease;
             font-weight: 600;
-            border: 1px solid transparent;
         }
 
         .contact-links a:hover {
@@ -185,27 +210,77 @@
             box-shadow: 0 5px 15px rgba(29, 185, 84, 0.4);
         }
 
-        /* === 📱 모바일 반응형 스타일 (여기가 중요!) === */
+        /* === 🎵 BGM 컨트롤러 버튼 스타일 === */
+        .bgm-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .bgm-control:hover {
+            transform: scale(1.1);
+            background-color: var(--accent-color);
+        }
+
+        .bgm-control svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .bgm-playing {
+            background-color: var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(29, 185, 84, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); }
+        }
+
+        /* === 💻/📱 반응형 스타일 === */
+        @media (min-width: 769px) {
+            .hero-video-wrapper iframe {
+                width: 100%;
+                height: 130%;
+                margin-top: -15%;
+            }
+        }
+
         @media (max-width: 768px) {
-            /* 네비게이션 조정 */
             nav { padding: 15px 20px; }
             .logo { font-size: 1.1rem; }
             .nav-links a { margin-left: 15px; font-size: 0.85rem; }
 
-            /* 히어로 섹션 글자 크기 조정 */
-            .hero { height: 70vh; min-height: 400px; }
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1.1rem; padding: 0 10px; }
-
-            /* 음악 카드 1열로 변경 */
-            .music-grid { 
-                grid-template-columns: 1fr; /* 한 줄에 하나씩 */
-                gap: 30px; 
-            }
             
-            /* Contact 버튼 세로로 쌓기 (화면이 너무 좁을 때) */
+            .hero-video-wrapper iframe {
+                width: 100%;
+                height: 100%;
+                transform: scale(1.3);
+            }
+
+            .music-grid { grid-template-columns: 1fr; gap: 30px; }
             .contact-links { gap: 15px; }
             .contact-links a { width: 100%; box-sizing: border-box; }
+            
+            /* 모바일에서 버튼 위치 살짝 조정 */
+            .bgm-control { bottom: 20px; right: 20px; width: 45px; height: 45px; }
         }
     </style>
 </head>
@@ -221,8 +296,17 @@
     </nav>
 
     <section id="home" class="hero">
-        <h1>STEPHEN PILDU YOON</h1>
-        <p>Composer & Producer</p>
+        <div class="video-background">
+            <div class="hero-video-wrapper">
+                <div id="youtube-player"></div>
+            </div>
+            <div class="video-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1>STEPHEN PILDU YOON</h1>
+            <p>Composer & Producer</p>
+        </div>
     </section>
 
     <section id="music" class="music-section">
@@ -231,7 +315,6 @@
         </div>
 
         <div class="music-grid">
-            
             <div class="music-card">
                 <h3>I Love Your Presence</h3>
                 <iframe width="100%" height="300" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1595020512&color=%231DB954&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
@@ -247,7 +330,6 @@
                     This is my progressive house track that captures the essence of uplifting melodies and driving beats.
                 </p>
             </div>
-
         </div>
     </section>
 
@@ -266,6 +348,99 @@
     <footer style="text-align: center; padding: 40px; color: #666; font-size: 0.8rem;">
         <p>© 2025 Stephen Pildu Yoon. All rights reserved.</p>
     </footer>
+
+    <div id="bgm-toggle" class="bgm-control" title="Play Background Music">
+        <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="icon-pause" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </div>
+
+    <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1595020512&auto_play=true&show_comments=false&color=00ff00" width="1" height="1" frameborder="0" allow="autoplay" style="position:absolute; opacity:0; pointer-events:none;"></iframe>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script>
+        // --- 1. 유튜브 배경 영상 설정 ---
+        let player;
+        const START_TIME = 15;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '100%',
+                width: '100%',
+                videoId: 'Y9zSf1NgMKs',
+                playerVars: {
+                    'autoplay': 1,
+                    'mute': 1,         // 배경 영상은 무조건 음소거
+                    'controls': 0,
+                    'modestbranding': 1,
+                    'fs': 0,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'disablekb': 1,
+                    'iv_load_policy': 3
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            player.seekTo(START_TIME);
+            player.playVideo();
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                // 영상이 끝까지 재생됨
+            }
+        }
+
+        // --- 2. BGM 설정 (SoundCloud) ---
+        var widgetIframe = document.getElementById('sc-widget');
+        var widget = SC.Widget(widgetIframe);
+        var bgmBtn = document.getElementById('bgm-toggle');
+        var iconPlay = document.getElementById('icon-play');
+        var iconPause = document.getElementById('icon-pause');
+        var isPlaying = false;
+
+        widget.bind(SC.Widget.Events.READY, function() {
+            // 볼륨 30% 설정
+            widget.setVolume(30); 
+            
+            // 자동 재생 시도 (브라우저가 허용하면 재생됨)
+            widget.play(); 
+        });
+
+        // 재생 상태가 바뀌면 버튼 모양 변경
+        widget.bind(SC.Widget.Events.PLAY, function() {
+            isPlaying = true;
+            updateButton();
+        });
+
+        widget.bind(SC.Widget.Events.PAUSE, function() {
+            isPlaying = false;
+            updateButton();
+        });
+
+        // 버튼 클릭 시 재생/정지 토글
+        bgmBtn.addEventListener('click', function() {
+            widget.toggle();
+        });
+
+        function updateButton() {
+            if (isPlaying) {
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
+                bgmBtn.classList.add('bgm-playing');
+            } else {
+                iconPlay.style.display = 'block';
+                iconPause.style.display = 'none';
+                bgmBtn.classList.remove('bgm-playing');
+            }
+        }
+    </script>
 
 </body>
 </html>
