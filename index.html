@@ -323,7 +323,7 @@
 
         <div class="hero-content">
             <h1>STEPHEN PILDU YOON</h1>
-            <p>Composer & Producer</p>
+            <p>Producer & Contents Creator</p>
         </div>
     </section>
 
@@ -376,10 +376,12 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://w.soundcloud.com/player/api.js"></script>
+   <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        // --- 1. 유튜브 배경 영상 설정 ---
+        // --- 1. 유튜브 배경 영상 설정 (수정됨) ---
         let player;
-        const START_TIME = 15;
+        const START_TIME = 15; // 시작 시간
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
@@ -387,15 +389,17 @@
                 width: '100%',
                 videoId: 'Y9zSf1NgMKs',
                 playerVars: {
-                    'autoplay': 1,
-                    'mute': 1,         // 배경 영상은 무조건 음소거
-                    'controls': 0,
-                    'modestbranding': 1,
-                    'fs': 0,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'disablekb': 1,
-                    'iv_load_policy': 3
+                    'autoplay': 1,       // 자동 재생
+                    'mute': 1,           // 음소거 (필수)
+                    'controls': 0,       // 컨트롤 바 숨김
+                    'modestbranding': 1, // 로고 최소화
+                    'fs': 0,             // 전체화면 버튼 숨김
+                    'rel': 0,            // 관련 영상 숨김
+                    'showinfo': 0,       // 정보 숨김
+                    'disablekb': 1,      // 키보드 조작 방지
+                    'iv_load_policy': 3, // 주석 숨김
+                    'playsinline': 1,    // iOS에서 전체화면 방지 (중요!)
+                    // loop와 playlist를 제거하여 충돌 방지
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -405,19 +409,25 @@
         }
 
         function onPlayerReady(event) {
-            player.seekTo(START_TIME);
-            player.playVideo();
+            // 영상이 준비되면 확실하게 음소거하고 재생
+            event.target.mute(); 
+            event.target.seekTo(START_TIME);
+            event.target.playVideo();
         }
 
         function onPlayerStateChange(event) {
-            // 영상이 끝나면 15초부터 다시 재생
-            if (event.data == YT.PlayerState.ENDED) {
+            // 영상이 끝났을 때(ENDED) 감지하여 15초로 이동
+            if (event.data === YT.PlayerState.ENDED) {
                 player.seekTo(START_TIME);
                 player.playVideo();
             }
+            // 가끔 버퍼링 후 멈추는 것 방지 (재생 중이 아니면 강제 재생)
+            if (event.data === YT.PlayerState.PAUSED) {
+                 player.playVideo();
+            }
         }
 
-        // --- 2. BGM 설정 (SoundCloud) ---
+        // --- 2. BGM 설정 (SoundCloud) - 기존과 동일 ---
         var widgetIframe = document.getElementById('sc-widget');
         var widget = SC.Widget(widgetIframe);
         var bgmBtn = document.getElementById('bgm-toggle');
@@ -426,14 +436,10 @@
         var isPlaying = false;
 
         widget.bind(SC.Widget.Events.READY, function() {
-            // 볼륨 30% 설정
             widget.setVolume(30); 
-            
-            // 자동 재생 시도 (브라우저가 허용하면 재생됨)
             widget.play(); 
         });
 
-        // 재생 상태가 바뀌면 버튼 모양 변경
         widget.bind(SC.Widget.Events.PLAY, function() {
             isPlaying = true;
             updateButton();
@@ -444,7 +450,6 @@
             updateButton();
         });
 
-        // 버튼 클릭 시 재생/정지 토글
         bgmBtn.addEventListener('click', function() {
             widget.toggle();
         });
