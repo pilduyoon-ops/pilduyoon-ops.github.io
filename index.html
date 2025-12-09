@@ -410,8 +410,10 @@
         }
 
         function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
-                // 영상이 끝까지 재생됨
+            // 영상이 끝나면 15초부터 다시 재생
+            if (event.data == YT.PlayerState.ENDED) {
+                player.seekTo(START_TIME);
+                player.playVideo();
             }
         }
 
