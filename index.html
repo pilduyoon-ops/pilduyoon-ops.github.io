@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stephen Pildu Yoon - Composer & Producer. Explore my latest music works and compositions.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Pildu Yoon - Music Portfolio</title>
+    <style>
+        /* 기본 설정 */
+        :root {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --accent-color: #1DB954; /* 스포티파이 느낌의 그린, 원하면 바꾸세요 */
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* 네비게이션 */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0,0,0,0.8);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 20px; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent-color); }
+
+        /* 히어로 섹션 (메인) */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            margin-top: 60px;
+        }
+
+        .hero h1 { font-size: 4rem; margin-bottom: 10px; }
+        .hero p { font-size: 1.5rem; color: #ccc; margin-bottom: 30px; }
+
+        /* 음악 섹션 (핵심!) */
+        .music-section {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        /* 음악 플레이어 배치 */
+        .music-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 반반 나누기 */
+            gap: 40px;
+        }
+
+        .music-card {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .music-card h3 { margin-top: 0; margin-bottom: 20px; color: var(--accent-color); }
+
+        .music-description {
+            margin-top: 10px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .center-content {
+            text-align: center;
+        }
+
+        /* iframe 스타일 */
+        iframe {
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* Contact 섹션 */
+        .contact-section {
+            padding: 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 15px 30px;
+            background: #1e1e1e;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .contact-links a:hover {
+            background: var(--accent-color);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* 반응형 (모바일) */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .music-grid { grid-template-columns: 1fr; } /* 모바일엔 한 줄로 */
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">STEPHEN PILDU YOON</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#music">Music</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>STEPHEN PILDU YOON</h1>
+        <p>Composer & Producer</p>
+    </section>
+
+    <section id="music" class="music-section">
+        <div class="center-content">
+            <h2 class="section-title">Latest Works</h2>
+        </div>
+
+        <div class="music-grid">
+            
+            <div class="music-card">
+                <h3>I Love Your Presence</h3>
+                <iframe width="100%" height="300" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1595020512&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+                <p class="music-description">
+                    This is Johan's first recording with Stephen Pildu Yoon. A heartfelt track blending soulful vocals with rich instrumentation.
+                </p>
+            </div>
+
+            <div class="music-card">
+                <h3>My Only Hope</h3>
+                <iframe width="100%" height="300" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1656768225&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+                <p class="music-description">
+                    This is my progressive house track that captures the essence of uplifting melodies and driving beats.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="center-content">
+            <h2 class="section-title">Get In Touch</h2>
+        </div>
+        <p>Want to collaborate or just say hi? Feel free to reach out!</p>
+        <div class="contact-links">
+            <a href="https://soundcloud.com/pildu-yoon" target="_blank">SoundCloud</a>
+            <a href="mailto:pilduyoon@gmail.com">Email</a>
+            <a href="https://instagram.com/stephenyoon4" target="_blank">Instagram</a>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 40px; color: #666;">
+        <p>© 2025 Stephen Pildu Yoon. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
