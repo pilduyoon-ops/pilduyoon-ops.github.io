@@ -28,6 +28,10 @@
             --accent-color: #1DB954;
             --card-bg: #1e1e1e;
         }
+
+        html {
+            scroll-behavior: smooth;
+        }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
@@ -37,6 +41,15 @@
             color: var(--text-color);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+
+        section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: 100vh;
         }
 
         /* === Navigation === */
@@ -144,12 +157,16 @@
 
         /* === Generic Section Styles === */
         .music-section {
-            padding: 80px 20px;
+            padding: 100px 20px;
             max-width: 1000px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
             background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
         }
 
         .section-title {
@@ -261,6 +278,10 @@
             margin: 0 auto;
             text-align: center;
             background: linear-gradient(to bottom, var(--bg-color), #0a0a0a);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
         }
 
         .contact-links {
@@ -466,7 +487,7 @@
         
         <div class="about-container">
             <div class="about-image">
-                <img src="Seoul1.jpeg" alt="Stephen Pildu Yoon in Seoul">
+                <img src="stephenyoon.jpeg" alt="Stephen Yoon">
             </div>
             <div class="about-text">
                 <h3 class="about-headline">Singing His Praise, Designing Innovation</h3>
@@ -492,10 +513,18 @@
                 <div class="role-block">
                     <h4>My Life's Goal</h4>
                     <p>
-                        As a husband and father to <strong>two wonderful sons</strong>, my mission is clear: to live out my life’s full potential to praise Jesus in the marketplace and at home.
+                        As a husband and father to <strong>two wonderful sons</strong>, my mission is clear: to live out my life's full potential to praise Jesus in the marketplace and at home.
                     </p>
                 </div>
             </div>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center;">
+            <img src="Seoul1.jpeg" alt="Stephen Pildu Yoon in Seoul" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+        </div>
+
+        <div style="margin-top: 40px; text-align: center;">
+            <img src="seoul2.jpeg" alt="Stephen Yoon in Seoul" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
         </div>
     </section>
 
