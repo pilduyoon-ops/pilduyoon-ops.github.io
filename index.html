@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Stephen Yoon - Producer & Content Creator. Salesman, Husband, and Father. Explore my latest music works and compositions.">
+    <meta name="description" content="Stephen Yoon - Sales Manager, Content Designer, and Musician based in Seoul. Singing His praise and designing innovation.">
     
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Stephen Yoon">
-    <meta property="og:title" content="Stephen Yoon - Music Portfolio">
-    <meta property="og:description" content="Producer & Content Creator. Explore my latest works.">
+    <meta property="og:title" content="Stephen Yoon - Music & Life">
+    <meta property="og:description" content="Singing His Praise, Designing Innovation. Meet Stephen Yoon.">
     <meta property="og:image" content="https://stephenyoon.com/stephenyoon.jpeg">
     <meta property="og:url" content="https://stephenyoon.com">
     
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Stephen Yoon - Music Portfolio">
-    <meta name="twitter:description" content="Producer & Content Creator. Explore my latest works.">
+    <meta name="twitter:title" content="Stephen Yoon">
+    <meta name="twitter:description" content="Singing His Praise, Designing Innovation.">
     <meta name="twitter:image" content="https://stephenyoon.com/stephenyoon.jpeg">
     
     <title>Stephen Yoon - My Life</title>
     <style>
-        /* === 기본 설정 === */
+        /* === Basic Settings === */
         :root {
             --bg-color: #121212;
             --text-color: #ffffff;
             --accent-color: #1DB954;
+            --card-bg: #1e1e1e;
         }
         
         body {
@@ -38,7 +39,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* === 네비게이션 === */
+        /* === Navigation === */
         nav {
             display: flex;
             justify-content: space-between;
@@ -72,7 +73,7 @@
         
         .nav-links a:hover { color: var(--accent-color); }
 
-        /* === 히어로 섹션 === */
+        /* === Hero Section === */
         .hero {
             position: relative;
             height: 100vh;
@@ -141,7 +142,7 @@
             text-shadow: 0 2px 5px rgba(0,0,0,0.7);
         }
 
-        /* === 음악 섹션 === */
+        /* === Generic Section Styles === */
         .music-section {
             padding: 80px 20px;
             max-width: 1000px;
@@ -169,6 +170,9 @@
             border-radius: 2px;
         }
 
+        .center-content { text-align: center; }
+
+        /* === Music Grid === */
         .music-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -176,7 +180,7 @@
         }
 
         .music-card {
-            background: #1e1e1e;
+            background: var(--card-bg);
             padding: 25px;
             border-radius: 12px;
             transition: transform 0.3s ease;
@@ -185,10 +189,72 @@
         .music-card:hover { transform: translateY(-5px); }
         .music-card h3 { margin-top: 0; margin-bottom: 15px; color: var(--accent-color); font-size: 1.3rem; }
         .music-description { margin-top: 15px; color: #bbb; font-size: 0.95rem; line-height: 1.5; }
-        .center-content { text-align: center; }
         iframe { border: none; border-radius: 8px; }
 
-        /* === Contact 섹션 === */
+        /* === ABOUT SECTION STYLES (New) === */
+        .about-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            object-fit: cover;
+        }
+
+        .about-text {
+            flex: 1.5;
+            text-align: left;
+        }
+
+        .about-headline {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .about-intro {
+            color: #ddd;
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+        }
+
+        .role-block {
+            margin-bottom: 25px;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 15px;
+        }
+
+        .role-block h4 {
+            color: var(--accent-color);
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .role-block p {
+            margin: 0;
+            color: #bbb;
+            font-size: 0.95rem;
+        }
+
+        /* === Contact Section === */
         .contact-section {
             padding: 100px 20px;
             max-width: 800px;
@@ -222,7 +288,7 @@
             box-shadow: 0 5px 15px rgba(29, 185, 84, 0.4);
         }
 
-        /* === 🎵 BGM 컨트롤러 버튼 스타일 === */
+        /* === BGM Controller === */
         .bgm-control {
             position: fixed;
             bottom: 30px;
@@ -264,7 +330,7 @@
             100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); }
         }
 
-        /* === 💻/📱 반응형 스타일 === */
+        /* === Responsive === */
         @media (min-width: 769px) {
             .hero-video-wrapper iframe {
                 width: 100%;
@@ -306,10 +372,15 @@
             }
 
             .music-grid { grid-template-columns: 1fr; gap: 30px; }
+            
+            /* About Section Mobile */
+            .about-container { flex-direction: column; padding: 25px; }
+            .about-image { width: 100%; min-width: auto; margin-bottom: 20px; }
+            .about-headline { font-size: 1.5rem; }
+
             .contact-links { gap: 15px; }
             .contact-links a { width: 100%; box-sizing: border-box; }
             
-            /* 모바일에서 버튼 위치 살짝 조정 */
             .bgm-control { bottom: 20px; right: 20px; width: 45px; height: 45px; }
         }
     </style>
@@ -321,6 +392,8 @@
         <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#music">Music</a>
+            <a href="#marketing-lab">Marketing Lab</a>
+            <a href="#about">Who Am I</a>
             <a href="#contact">Contact</a>
         </div>
     </nav>
@@ -363,11 +436,76 @@
         </div>
     </section>
 
+    <section id="marketing-lab" class="music-section">
+        <div class="center-content">
+            <h2 class="section-title">Marketing Lab</h2>
+        </div>
+        <p style="text-align: center; color: #ccc; max-width: 800px; margin: 0 auto 40px;">
+            Exploring innovative marketing strategies and creative content solutions.
+        </p>
+        <div class="music-grid">
+            <div class="music-card">
+                <h3>Coming Soon</h3>
+                <p class="music-description">
+                    Marketing projects and case studies will be showcased here. Stay tuned for updates on creative campaigns and content strategies.
+                </p>
+            </div>
+            <div class="music-card">
+                <h3>Content Creation</h3>
+                <p class="music-description">
+                    Innovative approaches to content marketing and audience engagement. More details coming soon.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="music-section">
+        <div class="center-content">
+            <h2 class="section-title">Who Am I</h2>
+        </div>
+        
+        <div class="about-container">
+            <div class="about-image">
+                <img src="Seoul1.jpeg" alt="Stephen Pildu Yoon in Seoul">
+            </div>
+            <div class="about-text">
+                <h3 class="about-headline">Singing His Praise, Designing Innovation</h3>
+                
+                <p class="about-intro">
+                    Hello, I’m <strong>Stephen (Pildu) Yoon</strong>. Based in Seoul, I navigate life through a unique blend of roles: Sales Manager, Content Designer, and Amateur Musician. They are all woven together by a single, defining thread: <strong>my love for Jesus and my desire to glorify Him.</strong>
+                </p>
+
+                <div class="role-block">
+                    <h4>Musician & Worshiper</h4>
+                    <p>
+                        Music is the heartbeat of my devotion. Playing keys and drums, I find joy in writing songs like "I Love Your Presence." My hope is that my melodies share comfort and point listeners back to the Creator.
+                    </p>
+                </div>
+
+                <div class="role-block">
+                    <h4>Sales Manager at KSM & Designer</h4>
+                    <p>
+                        At <strong>Korea Seal Master (KSM)</strong>, I believe sales is about "Engineering Creativity" and building trust through innovation. As a Content Designer, I view excellence in my work as a form of worship.
+                    </p>
+                </div>
+
+                <div class="role-block">
+                    <h4>My Life's Goal</h4>
+                    <p>
+                        As a husband and father to <strong>two wonderful sons</strong>, my mission is clear: to live out my life’s full potential to praise Jesus in the marketplace and at home.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact" class="contact-section">
         <div class="center-content">
             <h2 class="section-title">Get In Touch</h2>
         </div>
-        <p style="margin-bottom: 30px; color: #ccc;">Want to collaborate or just say hi? Feel free to reach out!</p>
+        <p style="margin-bottom: 30px; color: #ccc;">
+            Want to collaborate, discuss engineering creativity, or just say hi? Feel free to reach out!
+        </p>
         <div class="contact-links">
             <a href="https://soundcloud.com/pildu-yoon" target="_blank">SoundCloud</a>
             <a href="mailto:pilduyoon@gmail.com">Email</a>
@@ -389,9 +527,9 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        // --- 1. 유튜브 배경 영상 설정 ---
+        // --- 1. YouTube Background Settings ---
         let player;
-        const START_TIME = 15; // 시작 시간
+        const START_TIME = 15; 
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
@@ -399,16 +537,16 @@
                 width: '100%',
                 videoId: 'Y9zSf1NgMKs',
                 playerVars: {
-                    'autoplay': 1,       // 자동 재생
-                    'mute': 1,           // 음소거 (필수)
-                    'controls': 0,       // 컨트롤 바 숨김
-                    'modestbranding': 1, // 로고 최소화
-                    'fs': 0,             // 전체화면 버튼 숨김
-                    'rel': 0,            // 관련 영상 숨김
-                    'showinfo': 0,       // 정보 숨김
-                    'disablekb': 1,      // 키보드 조작 방지
-                    'iv_load_policy': 3, // 주석 숨김
-                    'playsinline': 1,    // iOS에서 전체화면 방지
+                    'autoplay': 1,       
+                    'mute': 1,           
+                    'controls': 0,       
+                    'modestbranding': 1, 
+                    'fs': 0,             
+                    'rel': 0,            
+                    'showinfo': 0,       
+                    'disablekb': 1,      
+                    'iv_load_policy': 3, 
+                    'playsinline': 1,    
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -424,18 +562,16 @@
         }
 
         function onPlayerStateChange(event) {
-            // 영상이 끝났을 때(ENDED) 감지하여 15초로 이동
             if (event.data === YT.PlayerState.ENDED) {
                 player.seekTo(START_TIME);
                 player.playVideo();
             }
-            // 가끔 버퍼링 후 멈추는 것 방지
             if (event.data === YT.PlayerState.PAUSED) {
                  player.playVideo();
             }
         }
 
-        // --- 2. BGM 설정 (SoundCloud) ---
+        // --- 2. BGM Settings (SoundCloud) ---
         var widgetIframe = document.getElementById('sc-widget');
         var widget = SC.Widget(widgetIframe);
         var bgmBtn = document.getElementById('bgm-toggle');
