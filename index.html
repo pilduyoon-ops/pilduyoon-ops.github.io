@@ -646,18 +646,54 @@
         }
 
         function onPlayerReady(event) {
-            event.target.mute(); 
-            event.target.seekTo(START_TIME);
-            event.target.playVideo();
+            event.target.mute();
+            // Try to play immediately
+            event.target.seekTo(START_TIME, true);
+
+            // Attempt playback with retry logic
+            attemptPlay(event.target);
+        }
+
+        function attemptPlay(target) {
+            try {
+                target.playVideo();
+
+                // Double-check after a short delay
+                setTimeout(function() {
+                    if (player && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                        player.playVideo();
+                    }
+                }, 1000);
+            } catch (e) {
+                console.log('Autoplay blocked, retrying...');
+                // Retry after user scrolls or interacts
+                document.addEventListener('click', function() {
+                    if (player) player.playVideo();
+                }, { once: true });
+            }
         }
 
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.ENDED) {
-                player.seekTo(START_TIME);
+                player.seekTo(START_TIME, true);
                 player.playVideo();
             }
+            // Only force play if it gets paused unexpectedly (not by user)
             if (event.data === YT.PlayerState.PAUSED) {
-                 player.playVideo();
+                // Small delay to avoid fighting with legitimate pauses
+                setTimeout(function() {
+                    if (player.getPlayerState() === YT.PlayerState.PAUSED) {
+                        player.playVideo();
+                    }
+                }, 500);
+            }
+            // Handle buffering state
+            if (event.data === YT.PlayerState.BUFFERING) {
+                setTimeout(function() {
+                    if (player.getPlayerState() === YT.PlayerState.BUFFERING) {
+                        player.playVideo();
+                    }
+                }, 2000);
             }
         }
 
