@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stephen Yoon | Bellows Engineering Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0a0a0a; /* Dark Portfolio Theme */
+            --card-bg: #161616;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --accent: #3b82f6;   /* Stephen's Accent Blue */
+            --accent-glow: rgba(59, 130, 246, 0.3);
+            --border: #333333;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- 1. Sitemap & Navigation (Personal Brand) --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand span { color: var(--accent); }
+
+        .breadcrumbs {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .breadcrumbs a:hover { color: var(--accent); }
+
+        /* --- 2. Hero Section --- */
+        .hero {
+            padding: 10rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* --- 3. Engineering Concepts (Blog Style) --- */
+        .tech-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .concept-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, border-color 0.3s;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .concept-card h3 {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .concept-image-placeholder {
+            width: 100%;
+            height: 180px;
+            background: #222;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #444;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* --- 4. Interactive Configurator (The Core Feature) --- */
+        .configurator-wrapper {
+            background: #111;
+            border-top: 1px solid var(--border);
+            padding: 6rem 2rem;
+        }
+
+        .tool-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 350px; /* Split: Form | Visuals */
+        }
+
+        /* Left Side: Form Wizard */
+        .tool-form {
+            padding: 3rem;
+            border-right: 1px solid var(--border);
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .step-dot {
+            height: 8px;
+            flex: 1;
+            background: #333;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .step-dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        .step-dot.completed { background: var(--success); }
+
+        .form-step { display: none; animation: fadeIn 0.4s ease; }
+        .form-step.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .input-group { margin-bottom: 1.5rem; }
+        
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-prev { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-prev:hover { border-color: var(--text-main); color: var(--text-main); }
+
+        .btn-next { background: var(--accent); color: white; }
+        .btn-next:hover { background: #2563eb; }
+
+        /* Right Side: Interactive Visual */
+        .tool-visual {
+            background: #0f0f0f;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .visual-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* SVG Styles */
+        svg { width: 100%; height: auto; max-width: 250px; }
+        .svg-dim { stroke: #444; stroke-width: 2; fill: none; transition: 0.3s; opacity: 0.3; }
+        .svg-dim.active-dim { stroke: var(--accent); opacity: 1; stroke-width: 3; filter: drop-shadow(0 0 5px var(--accent)); }
+        .svg-part { fill: #222; stroke: #555; stroke-width: 1; }
+
+        /* --- Footer --- */
+        footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .tool-container { grid-template-columns: 1fr; }
+            .tool-visual { border-top: 1px solid var(--border); height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="brand">Stephen<span>Yoon</span></a>
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                <a href="portfolio.html">Portfolio</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                <span style="color: var(--text-main)">Bellows Mechanics</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Advanced Bellows Engineering</h1>
+        <p>
+            Edge Welded Bellows의 역학적 원리 연구와 <br>
+            자동화된 사양 설계를 위한 인터랙티브 툴 개발 프로젝트
+        </p>
+    </section>
+
+    <section class="tech-section">
+        <h2 style="margin-bottom: 2rem; font-weight: 300;">Core <span style="font-weight:700">Physics</span></h2>
+        <div class="concept-grid">
+            <div class="concept-card">
+                <div class="concept-image-placeholder">
+                    <i class="fas fa-chart-line fa-2x"></i>
+                    <span style="margin-left:10px">S-N Curve Graphic</span>
+                </div>
+                <h3>01. Fatigue Life Prediction</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem;">
+                    Bellows 설계의 핵심은 피로 수명 예측입니다. S-N Curve(Stress-Life)와 Buhler’s Curve를 통해 Stroke 비율에 따른 기대 수명(Cycle Life)을 계산합니다.
+                </p>
+            </div>
+            
+            <div class="concept-card">
+                <div class="concept-image-placeholder">
+                    <i class="fas fa-compress-arrows-alt fa-2x"></i>
+                    <span style="margin-left:10px">Spring Rate Logic</span>
+                </div>
+                <h3>02. Hooke's Law & Stiffness</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem;">
+                    Bellows는 정밀 스프링으로 작동합니다. Plate 두께(t)와 Span(w)의 비율이 Spring Rate에 미치는 영향을 분석하여 시스템의 부하를 최적화합니다.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <div class="concept-image-placeholder">
+                    <i class="fas fa-shield-alt fa-2x"></i>
+                    <span style="margin-left:10px">Material Science</span>
+                </div>
+                <h3>03. High Alloy Selection</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem;">
+                    AM350, Inconel 625/718, Titanium 등 극한 환경(고온, 부식)을 견디는 특수 합금의 Tensile Strength와 Young's Modulus 특성 연구.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="configurator-wrapper">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h2 style="font-weight: 300; margin-bottom: 1rem;">Interactive <span style="font-weight:700; color:var(--accent);">Design Configurator</span></h2>
+            <p style="color:var(--text-muted);">아래 툴을 사용하여 가상의 Bellows 사양을 설계해보세요. <br>입력 필드를 선택하면 우측 그래픽에 해당 부위가 시각화됩니다.</p>
+        </div>
+
+        <div class="tool-container">
+            <div class="tool-form">
+                <div class="step-indicator">
+                    <div class="step-dot active" id="dot-1"></div>
+                    <div class="step-dot" id="dot-2"></div>
+                    <div class="step-dot" id="dot-3"></div>
+                </div>
+
+                <form id="bellowsForm">
+                    <div class="form-step active" id="step-1">
+                        <h3 style="margin-bottom:1.5rem;">Step 1. 운용 환경 (Environment)</h3>
+                        <div class="input-group">
+                            <label>압력 차이 (Pressure Differential)</label>
+                            <select onfocus="highlightDim('pressure')" onblur="resetDim()">
+                                <option>High Vacuum (Internal)</option>
+                                <option>Positive Pressure (External)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>운용 온도 (Temperature)</label>
+                            <input type="text" placeholder="e.g. 250°C" onfocus="highlightDim('temp')" onblur="resetDim()">
+                        </div>
+                        <div class="input-group">
+                            <label>요구 수명 (Target Cycles)</label>
+                            <select>
+                                <option>Standard (100k cycles)</option>
+                                <option>High Cycle (1M cycles)</option>
+                                <option>Extreme (5M+ cycles)</option>
+                            </select>
+                        </div>
+                        <div class="btn-row">
+                            <button type="button" class="btn btn-prev" disabled>Back</button>
+                            <button type="button" class="btn btn-next" onclick="nextStep(2)">Next: Dimensions</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step-2">
+                        <h3 style="margin-bottom:1.5rem;">Step 2. 치수 설정 (Dimensions)</h3>
+                        <div class="input-group">
+                            <label>내경 (Inner Diameter - ID)</label>
+                            <input type="number" placeholder="mm" onfocus="highlightDim('id')" onblur="resetDim()">
+                        </div>
+                        <div class="input-group">
+                            <label>외경 (Outer Diameter - OD)</label>
+                            <input type="number" placeholder="mm" onfocus="highlightDim('od')" onblur="resetDim()">
+                        </div>
+                        <div class="input-group">
+                            <label>길이 (Length)</label>
+                            <input type="number" placeholder="mm" onfocus="highlightDim('length')" onblur="resetDim()">
+                        </div>
+                        <div class="btn-row">
+                            <button type="button" class="btn btn-prev" onclick="nextStep(1)">Back</button>
+                            <button type="button" class="btn btn-next" onclick="nextStep(3)">Next: Flanges</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step-3">
+                        <h3 style="margin-bottom:1.5rem;">Step 3. 연결 및 검토 (Finalize)</h3>
+                        <div class="input-group">
+                            <label>상부 플랜지 (Top Flange)</label>
+                            <select onfocus="highlightDim('flange')" onblur="resetDim()">
+                                <option>CF Flange</option>
+                                <option>KF Flange</option>
+                                <option>Weld End</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>재질 (Material)</label>
+                            <select>
+                                <option>316L Stainless Steel</option>
+                                <option>AM350</option>
+                                <option>Inconel 718</option>
+                            </select>
+                        </div>
+                        <div class="btn-row">
+                            <button type="button" class="btn btn-prev" onclick="nextStep(2)">Back</button>
+                            <button type="button" class="btn btn-next" style="background:var(--success)" onclick="finishConfig()">Generate Spec Sheet</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tool-visual">
+                <div class="visual-label">Live Preview</div>
+                <svg viewBox="0 0 200 300">
+                    <defs>
+                        <linearGradient id="metalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#333;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#666;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#333;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+
+                    <rect id="visual-flange" x="40" y="20" width="120" height="15" fill="url(#metalGradient)" stroke="#888"/>
+                    
+                    <path class="svg-part" d="M50 35 L150 35 L160 45 L150 55 L50 55 L40 45 Z" fill="url(#metalGradient)"/>
+                    <path class="svg-part" d="M50 55 L150 55 L160 65 L150 75 L50 75 L40 65 Z" fill="url(#metalGradient)"/>
+                    <path class="svg-part" d="M50 75 L150 75 L160 85 L150 95 L50 95 L40 85 Z" fill="url(#metalGradient)"/>
+                    <path class="svg-part" d="M50 95 L150 95 L160 105 L150 115 L50 115 L40 105 Z" fill="url(#metalGradient)"/>
+                    <path class="svg-part" d="M50 115 L150 115 L160 125 L150 135 L50 135 L40 125 Z" fill="url(#metalGradient)"/>
+                    
+                    <rect x="40" y="135" width="120" height="15" fill="url(#metalGradient)" stroke="#888"/>
+
+                    <g id="dim-id" class="svg-dim">
+                        <line x1="50" y1="150" x2="50" y2="180" />
+                        <line x1="150" y1="150" x2="150" y2="180" />
+                        <text x="100" y="175" fill="#fff" font-size="10" text-anchor="middle">Inner Dia (ID)</text>
+                        <line x1="50" y1="170" x2="150" y2="170" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+                    </g>
+
+                    <g id="dim-od" class="svg-dim">
+                        <line x1="40" y1="10" x2="40" y2="0" />
+                        <line x1="160" y1="10" x2="160" y2="0" />
+                        <text x="100" y="10" fill="#fff" font-size="10" text-anchor="middle">Outer Dia (OD)</text>
+                        <line x1="40" y1="5" x2="160" y2="5" />
+                    </g>
+
+                    <g id="dim-length" class="svg-dim">
+                        <line x1="170" y1="20" x2="190" y2="20" />
+                        <line x1="170" y1="150" x2="190" y2="150" />
+                        <line x1="180" y1="20" x2="180" y2="150" />
+                        <text x="185" y="85" fill="#fff" font-size="10" transform="rotate(90 185,85)">Length</text>
+                    </g>
+
+                    <rect id="dim-flange" class="svg-dim" x="35" y="15" width="130" height="25" rx="2" />
+
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="nav-container" style="justify-content: center; flex-direction: column;">
+            <p style="margin-bottom: 1rem;">Designed by Stephen Yoon</p>
+            <p style="font-size: 0.8rem; color: #555;">
+                This page is a personal portfolio project demonstrating front-end development and mechanical engineering knowledge.<br>
+                Not an official corporate website.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Step Navigation Logic
+        function nextStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.step-dot').forEach(el => el.classList.remove('active'));
+
+            // Show current step
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+            
+            // Update dots
+            for (let i = 1; i <= stepNumber; i++) {
+                document.getElementById(`dot-${i}`).classList.add('active');
+            }
+        }
+
+        function finishConfig() {
+            alert("Specification Data Generated! \n(This is a demo interaction for the portfolio)");
+        }
+
+        // 2. Interactive Graphic Logic
+        function highlightDim(type) {
+            // Remove all highlights first
+            document.querySelectorAll('.svg-dim').forEach(el => el.classList.remove('active-dim'));
+
+            // Add highlight based on input focus
+            if (type === 'id') {
+                document.getElementById('dim-id').classList.add('active-dim');
+            } else if (type === 'od') {
+                document.getElementById('dim-od').classList.add('active-dim');
+            } else if (type === 'length') {
+                document.getElementById('dim-length').classList.add('active-dim');
+            } else if (type === 'flange') {
+                document.getElementById('dim-flange').classList.add('active-dim');
+            }
+            // For pressure/temp, we could add subtle color changes to the body, but keeping it simple for now.
+        }
+
+        function resetDim() {
+            document.querySelectorAll('.svg-dim').forEach(el => el.classList.remove('active-dim'));
+        }
+    </script>
+</body>
+</html>
