@@ -487,9 +487,9 @@
           if(coolingLine[x]) {
             if(y === 1 || y === 2) {
               // Strong cooling near heater, modulated by Thickness
-              sink += 0.8 * pCool * coolFactor * (AMBIENT - T);
+              sink += 0.4 * pCool * coolFactor * (AMBIENT - T);
             } else if(y === 3) {
-              sink += 0.3 * pCool * coolFactor * (AMBIENT - T);
+              sink += 0.15 * pCool * coolFactor * (AMBIENT - T);
             }
           }
 

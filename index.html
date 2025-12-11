@@ -202,8 +202,18 @@
             border-radius: 12px;
             transition: transform 0.3s ease;
         }
-        
+
         .music-card:hover { transform: translateY(-5px); }
+
+        .music-card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .music-card-link:hover .music-card {
+            transform: translateY(-5px);
+        }
         .music-card h3 { margin-top: 0; margin-bottom: 15px; color: var(--accent-color); font-size: 1.3rem; }
         .music-description { margin-top: 15px; color: #bbb; font-size: 0.95rem; line-height: 1.5; }
         iframe { border: none; border-radius: 8px; }
@@ -465,12 +475,14 @@
             Exploring innovative marketing strategies and creative content solutions.
         </p>
         <div class="music-grid">
-            <div class="music-card">
-                <h3><a href="semiconductorheater.html" style="color: var(--accent-color); text-decoration: none;">Semiconductor Heater Game</a></h3>
-                <p class="music-description">
-                    Design heater and meet the temperature requirement by designing heating elements and cooling line. An interactive engineering challenge that combines creativity with technical precision.
-                </p>
-            </div>
+            <a href="semiconductorheater.html" class="music-card-link">
+                <div class="music-card">
+                    <h3>Semiconductor Heater Game</h3>
+                    <p class="music-description">
+                        Design heater and meet the temperature requirement by designing heating elements and cooling line. An interactive engineering challenge that combines creativity with technical precision.
+                    </p>
+                </div>
+            </a>
             <div class="music-card">
                 <h3>Content Creation</h3>
                 <p class="music-description">
