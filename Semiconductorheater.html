@@ -183,6 +183,10 @@
     .modal-overlay.active .modal-box { transform: scale(1); }
     .modal-box h3 { margin-bottom: 12px; font-size: 1.2rem; color: #0f172a; }
     .modal-box p { font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 20px; white-space: pre-line; }
+    .modal-box ul { font-size: 0.85rem; color: #475569; line-height: 1.8; margin: 12px 0 20px 20px; }
+    .modal-box ul li { margin-bottom: 8px; }
+    .modal-box .intro-section { margin-bottom: 16px; }
+    .modal-box .intro-section strong { color: #0f172a; font-size: 0.95rem; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
   </style>
@@ -317,6 +321,41 @@
     </div>
   </div>
 
+  <div class="modal-overlay active" id="introModal">
+    <div class="modal-box" style="max-width: 520px;">
+      <h3>Welcome to Semiconductor Heater Design</h3>
+
+      <div class="intro-section">
+        <strong>Game Objective:</strong>
+        <p style="margin-top: 6px;">Design an optimal heater configuration to achieve precise temperature control on a semiconductor wafer. You must meet both the target average temperature AND maintain excellent temperature uniformity across the surface.</p>
+      </div>
+
+      <div class="intro-section">
+        <strong>How to Play:</strong>
+        <ul>
+          <li><strong>Click on green heater cells</strong> to toggle heaters on/off (inner = red, outer = orange)</li>
+          <li><strong>Click on blue cooling cells</strong> to toggle cooling lines on/off</li>
+          <li><strong>Adjust power sliders</strong> to control inner/outer heater power and cooling strength</li>
+          <li><strong>Tune geometry parameters</strong> like material thickness, heater gap, and boundary zones</li>
+          <li><strong>Select materials</strong> with different thermal properties (spreading vs efficiency)</li>
+        </ul>
+      </div>
+
+      <div class="intro-section">
+        <strong>Win Conditions:</strong>
+        <ul>
+          <li>Average temperature must be within the target range (Goal Temp ± tolerance)</li>
+          <li>Temperature uniformity (ΔT = max - min) must be below the spec limit</li>
+          <li>Complete all 3 stages with increasing difficulty!</li>
+        </ul>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="startGame()">Start Game</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // --- CONSTANTS ---
     const AMBIENT = 25;
@@ -344,9 +383,9 @@
 
     // Stages: Increased Gains and Diffusion
     const stages = [
-      { name: "Stage 1: Basic Heating", target: 180, tol: 15, maxDt: 25, heatGain: 12.0, cond: 0.6 },
-      { name: "Stage 2: Precision Control", target: 220, tol: 10, maxDt: 15, heatGain: 14.0, cond: 0.7 },
-      { name: "Stage 3: High Temp & Uniformity", target: 250, tol: 8,  maxDt: 12, heatGain: 16.0, cond: 0.8 }
+      { name: "Stage 1: Basic Heating", target: 180, tol: 15, maxDt: 25, heatGain: 6.0, cond: 0.6 },
+      { name: "Stage 2: Precision Control", target: 220, tol: 10, maxDt: 15, heatGain: 7.0, cond: 0.7 },
+      { name: "Stage 3: High Temp & Uniformity", target: 250, tol: 8,  maxDt: 12, heatGain: 8.0, cond: 0.8 }
     ];
     let curStage = 0;
 
@@ -717,6 +756,10 @@
       tempGrid = Array.from({length: GRID_Y}, () => new Array(LENGTH).fill(AMBIENT));
       surfaceTemp.fill(AMBIENT);
       updateStageUI();
+    }
+
+    function startGame() {
+      document.getElementById('introModal').classList.remove('active');
     }
 
     init();
