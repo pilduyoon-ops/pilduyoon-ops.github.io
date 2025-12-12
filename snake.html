@@ -140,11 +140,16 @@
             <h1>Game Over</h1>
             <p id="finalScore" style="font-size:1.5rem;">0 points</p>
 
-            <input type="text" id="pName" placeholder="Enter your name" style="padding:10px; font-size:1.2rem; text-align:center; border:2px solid #81c784; border-radius:10px;">
+            <input type="text" id="pName" placeholder="Enter your name" style="padding:10px; font-size:1.2rem; text-align:center; border:2px solid #81c784; border-radius:10px; margin-bottom:15px;">
             <br>
-            <button onclick="saveRecord()">Save Score</button>
 
-            <div id="rankBox" style="margin-top:20px; background:#fff; padding:15px; border-radius:10px; width:250px; text-align:left; border:1px solid #ddd;"></div>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <button onclick="saveAndPlayAgain()" style="background:#66bb6a;">💾 Save & Play Again</button>
+                <button onclick="playAgain()" style="background:#42a5f5;">🔄 Play Again</button>
+                <button onclick="quitToHome()" style="background:#ef5350;">🏠 Quit to Home</button>
+            </div>
+
+            <div id="rankBox" style="margin-top:20px; background:#fff; padding:15px; border-radius:10px; width:280px; text-align:left; border:1px solid #ddd;"></div>
         </div>
     </div>
 
@@ -527,9 +532,19 @@
             list.sort((a,b)=>b.s - a.s);
             list = list.slice(0,5);
             localStorage.setItem('catRank', JSON.stringify(list));
-            
-            // Restart
+        }
+
+        function saveAndPlayAgain() {
+            saveRecord();
+            playAgain();
+        }
+
+        function playAgain() {
             startSequence();
+        }
+
+        function quitToHome() {
+            window.location.href = 'https://stephenyoon.com';
         }
 
         function loadRank() {
