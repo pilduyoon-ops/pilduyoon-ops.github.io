@@ -6,13 +6,12 @@
     <title>Stephen's Creative Flow</title>
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
-        /* 폰트를 좀 더 모던하고 크리에이티브한 느낌으로 변경 */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #121212; /* 다크 모드 배경 */
+            background-color: #121212;
             font-family: 'Montserrat', sans-serif;
             touch-action: none;
             color: white;
@@ -30,18 +29,20 @@
 
         .header-info {
             display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 1.1rem;
             color: #fff;
             text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        #missionText { color: #00d2d3; font-weight: bold; } /* 민트색 포인트 */
+        #missionText { color: #00d2d3; font-weight: bold; }
+        #scoreText { color: #fff; font-weight: bold; }
 
         /* Start/Game Over Screen */
         #overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(18, 18, 18, 0.95); /* 어두운 배경 */
+            background: rgba(18, 18, 18, 0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -53,7 +54,7 @@
 
         h1 {
             font-size: 3rem;
-            background: linear-gradient(to right, #00d2d3, #5f27cd); /* 그라데이션 텍스트 */
+            background: linear-gradient(to right, #00d2d3, #5f27cd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0 0 10px 0;
@@ -62,7 +63,6 @@
 
         .desc { font-size: 1rem; margin-bottom: 20px; color: #bbb; letter-spacing: 1px; }
 
-        /* 게임 가이드 박스 디자인 변경 */
         .guide-box {
             background: rgba(255,255,255,0.1);
             padding: 20px;
@@ -77,7 +77,7 @@
         }
 
         button {
-            background: linear-gradient(45deg, #5f27cd, #341f97); /* 보라색 버튼 */
+            background: linear-gradient(45deg, #5f27cd, #341f97);
             border: none;
             padding: 15px 40px;
             font-size: 1.2rem;
@@ -101,15 +101,16 @@
 
         #musicIndicator {
             position: absolute;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             background: rgba(0,0,0,0.7);
             color: white;
-            padding: 5px 15px;
+            padding: 8px 15px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             z-index: 15;
-            border: 1px solid #333;
+            border: 1px solid #5f27cd;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         #controls {
@@ -121,7 +122,6 @@
         }
         .ctrl-btn { flex: 1; opacity: 0; }
 
-        /* 사용자 정의 버튼 스타일 (Game Over 화면) */
         .action-btn {
             font-size: 1rem;
             padding: 12px 20px;
@@ -129,7 +129,7 @@
             margin: 5px;
         }
 
-        /* === BGM Controller === */
+        /* BGM Controller */
         .bgm-control {
             position: fixed;
             bottom: 30px;
@@ -182,11 +182,11 @@
     <div id="uiLayer">
         <div class="header-info">
             <span id="missionText">Loading...</span>
-            <span>SCORE: <span id="scoreText">0</span></span>
+            <span>Score: <span id="scoreText">0</span></span>
         </div>
     </div>
 
-    <div id="musicIndicator">♫ BGM: Stephen Yoon</div>
+    <div id="musicIndicator">♫ Stephen Yoon</div>
 
     <div id="overlay">
         <div id="startScreen">
@@ -195,8 +195,8 @@
             <div class="guide-box">
                 1. Collect Inspiration: 🎵, 🎹, 💿<br>
                 2. ☕ <strong>Caffeine(Coffee)</strong> makes you<br> 
-                   <span style="color:#ff6b6b">Hyper-Fast & Productive!</span> (Rampage)<br>
-                3. 🛌 <strong>Rest(Bed)</strong> heals burnout & resets.
+                   <span style="color:#ff6b6b">50% Faster!</span> (Rampage)<br>
+                3. 🛌 <strong>Rest(Bed)</strong> increases base speed by 20% but keeps your length.
             </div>
             <br>
             <button onclick="startGameWithMusic()">PLAY & MUSIC START ▶</button>
@@ -242,7 +242,6 @@
         var iconPause = document.getElementById('icon-pause');
         var isMusicPlaying = false;
 
-        // Widget event listeners
         widget.bind(SC.Widget.Events.READY, function() {
             widget.setVolume(30);
         });
@@ -257,7 +256,6 @@
             updateMusicButton();
         });
 
-        // Toggle button click handler
         bgmBtn.addEventListener('click', function() {
             widget.toggle();
         });
@@ -285,7 +283,12 @@
 
         let snake = [];
         let angle = 0;
-        let speed = 2.2; 
+        
+        // Speed Variables
+        const START_SPEED = 2.2;
+        let currentBaseSpeed = START_SPEED; // Tracks the "Normal" speed for the current loop
+        let speed = START_SPEED; // Actual current speed
+
         let turnSpeed = 0.08;
         let snakeWidth = 14; 
         let growPending = 0;
@@ -296,22 +299,21 @@
         let score = 0;
         let frameCount = 0;
 
-        // === CHANGED: Food items mapped to Music/Creative Theme ===
         const stages = [
             { name: "note", emoji: "🎵", count: 1 },
             { name: "piano", emoji: "🎹", count: 2 },
             { name: "cd", emoji: "💿", count: 3 },
             { name: "guitar", emoji: "🎸", count: 4 },
             { name: "mic", emoji: "🎤", count: 5 },
-            { name: "caffeine", emoji: "coffee", count: 10 }, // Was Junk -> Caffeine
-            { name: "rest", emoji: "🛌", count: 1 }      // Was Leaf -> Rest
+            { name: "caffeine", emoji: "coffee", count: 10 }, 
+            { name: "rest", emoji: "🛌", count: 1 }      
         ];
-        const junkList = ['☕','🥤','🔥','⚡','💊']; // Caffeine Items
+        const junkList = ['☕','🥤','🔥','⚡','💊']; 
 
         let stageIdx = 0;
         let eatenCount = 0;
         let food = { x: 0, y: 0, emoji: "", size: 20 };
-        let isSick = false; // "Sick" means "Caffeine Overload" here
+        let isSick = false; 
 
         function resize() {
             canvas.width = window.innerWidth;
@@ -320,16 +322,13 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // === CHANGED: Draw Background (Dark Studio Vibe) ===
         function drawBackground() {
-            // Dark Gradient Background
             let grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            grd.addColorStop(0, "#0f0c29"); // Deep Blue/Black
-            grd.addColorStop(1, "#302b63"); // Purple
+            grd.addColorStop(0, "#0f0c29"); 
+            grd.addColorStop(1, "#302b63"); 
             ctx.fillStyle = grd;
             ctx.fillRect(0,0, canvas.width, canvas.height);
 
-            // Simple Star/Particles effect
             ctx.fillStyle = "#ffffff";
             for(let i=0; i<15; i++) {
                 let x = (frameCount * 0.2 + i * 150) % canvas.width;
@@ -373,7 +372,11 @@
             growPending = 0;
             stageIdx = 0;
             eatenCount = 0;
-            speed = 2.2;
+            
+            // Reset Speed variables
+            currentBaseSpeed = START_SPEED; 
+            speed = START_SPEED;
+
             isSick = false;
 
             document.getElementById('scoreText').innerText = score;
@@ -383,33 +386,73 @@
             loop();
         }
 
+        // === MODIFIED: Spawn Food preventing collision with snake body ===
         function spawnFood() {
             const st = stages[stageIdx];
+            let type = "normal";
+            let emoji = st.emoji;
+            let size = 20;
+
             if(st.name === 'caffeine') {
-                food.emoji = junkList[Math.floor(Math.random()*junkList.length)];
-                food.size = Math.random() * 20 + 25; 
+                type = "caffeine";
+                emoji = junkList[Math.floor(Math.random()*junkList.length)];
+                size = Math.random() * 20 + 25; 
             } else if(st.name === 'rest') {
-                food.emoji = "🛌";
-                food.size = 30;
+                type = "rest";
+                emoji = "🛌";
+                size = 30;
             } else {
-                food.emoji = st.emoji;
-                food.size = Math.random() * 10 + 20;
+                emoji = st.emoji;
+                size = Math.random() * 10 + 20;
             }
 
-            food.x = Math.random() * (canvas.width - 60) + 30;
-            food.y = Math.random() * (canvas.height - 60) + 30;
+            food.emoji = emoji;
+            food.size = size;
+
+            // Collision Check Loop
+            let validPosition = false;
+            let attempts = 0;
+            let margin = 60;
+            
+            while(!validPosition && attempts < 100) {
+                let fx = Math.random() * (canvas.width - margin*2) + margin;
+                let fy = Math.random() * (canvas.height - margin*2) + margin;
+                
+                // Check distance from all snake segments
+                let collision = false;
+                for(let i=0; i<snake.length; i++) {
+                    let dist = Math.hypot(fx - snake[i].x, fy - snake[i].y);
+                    // Safe distance: food radius + snake radius + extra buffer
+                    if(dist < (size/2 + snakeWidth + 10)) {
+                        collision = true;
+                        break;
+                    }
+                }
+
+                if(!collision) {
+                    food.x = fx;
+                    food.y = fy;
+                    validPosition = true;
+                }
+                attempts++;
+            }
+            
+            // Fallback if screen is too full (rare)
+            if(!validPosition) {
+                food.x = Math.random() * (canvas.width - 60) + 30;
+                food.y = Math.random() * (canvas.height - 60) + 30;
+            }
         }
 
         function updateMission() {
             const st = stages[stageIdx];
             const t = document.getElementById('missionText');
-            // Changed Text for Creative Theme
             if(st.name === 'caffeine') t.innerText = "⚡ Caffeine Rush! Work Harder!";
             else if(st.name === 'rest') t.innerText = "🛌 Find Rest to Reset!";
             else t.innerText = `${st.emoji} ${st.count - eatenCount} left`;
         }
 
-        // Controls (Preserved)
+        // Controls
         document.addEventListener('keydown', e=>{
             if(e.key==='ArrowLeft') isTurningLeft=true;
             if(e.key==='ArrowRight') isTurningRight=true;
@@ -458,6 +501,7 @@
             }
         }
 
+        // === MODIFIED: Speed and Length Logic ===
         function eat() {
             const st = stages[stageIdx];
 
@@ -465,22 +509,29 @@
             
             let growAmount = Math.floor(food.size); 
             
-            // Caffeine Stage (was Junk)
+            // 1. Caffeine Stage
             if(st.name === 'caffeine') {
                 growAmount *= 3; 
-                speed += 0.2; 
-                isSick = true; // Visual effect trigger
+                // Speed = 50% faster than current base speed
+                speed = currentBaseSpeed * 1.5; 
+                isSick = true; 
             }
 
-            // Rest Stage (was Leaf)
+            // 2. Rest Stage (Bed)
             if(st.name === 'rest') {
-                speed = 2.2;
+                // Increase Base Speed by 20% for the next round (Permanent difficulty increase)
+                currentBaseSpeed = currentBaseSpeed * 1.2;
+                
+                // Return to normal (new) base speed
+                speed = currentBaseSpeed;
+
                 isSick = false;
                 growAmount = 0; 
-                if(snake.length > 50) {
-                   snake.splice(50); 
-                }
+
+                // CHANGED: We do NOT cut the snake length anymore.
+                // It keeps its size (bigger).
                 
+                // Reset loop
                 stageIdx = 0;
                 eatenCount = 0;
                 spawnFood();
@@ -517,7 +568,6 @@
                 if(i%3===0) { 
                     let p = snake[i];
                     ctx.beginPath();
-                    // Color Change: Red/Pink (Overloaded) vs Mint/Green (Healthy)
                     if(isSick) ctx.fillStyle = (i%6===0)?"#ff7675":"#d63031"; 
                     else ctx.fillStyle = (i%6===0)?"#55efc4":"#00b894"; 
 
@@ -529,12 +579,12 @@
             
             // Head
             let h = snake[0];
-            ctx.fillStyle = isSick ? "#ff9f43" : "#6c5ce7"; // Orange (Overload) vs Purple (Normal)
+            ctx.fillStyle = isSick ? "#ff9f43" : "#6c5ce7"; 
             ctx.beginPath();
             ctx.ellipse(h.x, h.y, snakeWidth*1.5, snakeWidth*1.4, angle, 0, Math.PI*2);
             ctx.fill();
 
-            // Eyes (Simpler, more digital look)
+            // Eyes
             let eyeOff = snakeWidth*0.7;
             let ex1=h.x+Math.cos(angle-0.5)*eyeOff;
             let ey1=h.y+Math.sin(angle-0.5)*eyeOff;
