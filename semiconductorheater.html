@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Semiconductor Heater - Pro V5 Revised</title>
+  <title>Semiconductor Heater Design - Pro V5</title>
   <style>
     :root {
       --bg-app: #f8fafc;
@@ -19,16 +18,16 @@
       --warn-text: #92400e;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: system-ui, -apple-system, sans-serif;
       background: var(--bg-app);
       color: var(--text-main);
       height: 100vh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      overflow: hidden; 
     }
 
     /* HEADER */
@@ -39,24 +38,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
+      padding: 0 20px;
       flex-shrink: 0;
-      z-index: 10;
     }
-    header h1 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    header h1 { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
     .badge { background: #dbeafe; color: #1e40af; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; }
 
-    /* LAYOUT CONTAINER */
-    main { 
-      flex: 1; 
-      display: flex; 
-      padding: 12px; 
-      gap: 12px; 
-      height: calc(100vh - 50px); 
-      overflow: hidden;
-    }
+    /* LAYOUT */
+    main { flex: 1; display: flex; padding: 12px; gap: 12px; height: calc(100vh - 50px); }
 
-    /* PANELS */
     .panel {
       background: var(--bg-panel);
       border: 1px solid var(--border);
@@ -66,16 +56,20 @@
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+
     .panel-header {
-      padding: 10px 14px;
+      padding: 12px 16px;
       background: #f8fafc;
       border-bottom: 1px solid var(--border);
-      font-size: 0.85rem; font-weight: 600; color: var(--text-main);
-      display: flex; justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
     }
 
-    /* LEFT: CANVAS PANE */
-    .visual-pane { flex: 3; min-width: 0; display: flex; flex-direction: column; }
+    /* LEFT: CANVAS */
+    .visual-pane { flex: 3; min-width: 0; }
     .canvas-wrapper {
       flex: 1;
       position: relative;
@@ -84,50 +78,44 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 10px;
     }
     canvas {
-      /* Responsive Sizing */
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       border-radius: 4px;
       background: #fff;
-      cursor: crosshair;
-      touch-action: none; /* Vital for touch dragging */
+      max-width: 98%; max-height: 98%;
     }
     .legend {
-      padding: 8px 12px; background: #fff;
-      border-top: 1px solid var(--border);
+      position: absolute; bottom: 16px; left: 16px;
+      background: rgba(255,255,255,0.95);
+      padding: 10px; border-radius: 6px;
+      border: 1px solid var(--border);
       font-size: 0.75rem; color: var(--text-sub);
-      display: flex; flex-wrap: wrap; gap: 12px;
+      line-height: 1.5; pointer-events: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
-    /* RIGHT: CONTROLS PANE */
-    .control-pane { flex: 2; max-width: 400px; min-width: 300px; display: flex; flex-direction: column; }
-    .scroll-area { 
-      flex: 1; overflow-y: auto; padding: 16px; 
-      display: flex; flex-direction: column; gap: 16px;
-      -webkit-overflow-scrolling: touch; 
-    }
+    /* RIGHT: CONTROLS */
+    .control-pane { flex: 2; max-width: 400px; min-width: 320px; }
+    .scroll-area { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 20px; }
 
-    /* UI COMPONENTS */
+    /* MISSION BOARD */
     .mission-board {
       background: var(--warn-bg);
       border: 1px solid var(--warn-border);
       border-left: 4px solid #f59e0b;
-      border-radius: 6px; padding: 10px;
-      display: flex; flex-direction: column; gap: 4px;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex; flex-direction: column; gap: 6px;
     }
-    .mission-row { display: flex; justify-content: space-between; font-size: 0.85rem; }
+    .mission-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
     .m-label { font-weight: 700; color: var(--warn-text); }
-    .m-val { font-family: monospace; font-weight: 700; background: rgba(255,255,255,0.7); padding: 0 4px; }
+    .m-val { font-family: monospace; font-weight: 700; background: rgba(255,255,255,0.7); padding: 2px 6px; border-radius: 4px; }
 
+    /* DASHBOARD GRID */
     .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .stat-card {
-      background: #f1f5f9; border-radius: 6px; padding: 8px;
+      background: #f1f5f9; border-radius: 6px; padding: 10px;
       display: flex; flex-direction: column; align-items: center;
     }
     .stat-label { font-size: 0.7rem; color: var(--text-sub); margin-bottom: 2px; }
@@ -135,87 +123,80 @@
     .stat-val.good { color: var(--success); }
     .stat-val.bad { color: var(--danger); }
 
+    /* SLIDERS & INPUTS */
+    .section-title {
+      font-size: 0.75rem; font-weight: 700; color: var(--text-sub);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 8px; border-bottom: 2px solid #f1f5f9; padding-bottom: 4px;
+    }
     .control-row { margin-bottom: 12px; }
     .control-row label { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; }
-    input[type="range"] { width: 100%; height: 24px; cursor: pointer; } /* Taller for touch */
-    select { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; background: #fff; }
-
-    /* POWER CONTROLS */
-    .click-control { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .click-label { font-size: 0.8rem; width: 60px; font-weight: 600; }
-    .btn-icon {
-      width: 32px; height: 32px; border: 1px solid var(--border); background: #fff;
-      border-radius: 6px; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+    .control-row span.val { font-family: monospace; color: var(--accent); }
+    input[type="range"] {
+      width: 100%; height: 6px; background: #cbd5e1; border-radius: 3px; appearance: none; cursor: pointer;
     }
-    .btn-icon:active { background: #f1f5f9; }
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none; width: 16px; height: 16px; background: var(--accent);
+      border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    select { width: 100%; padding: 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; }
+
+    /* CLICK CONTROLS */
+    .click-control { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .click-label { font-size: 0.8rem; width: 65px; font-weight: 600; }
+    .btn-icon {
+      width: 28px; height: 28px; border: 1px solid var(--border); background: #fff;
+      border-radius: 6px; color: var(--text-main); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-weight: 700;
+      transition: all 0.1s;
+    }
+    .btn-icon:hover { background: #f1f5f9; border-color: #94a3b8; }
+    .btn-icon:active { transform: translateY(1px); }
+    
     .progress-track { flex: 1; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
-    .progress-fill { height: 100%; transition: width 0.1s; }
+    .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
     .progress-val { font-size: 0.8rem; width: 45px; text-align: right; font-family: monospace; font-weight: 600; }
 
+    /* FOOTER */
     .action-bar {
-      padding: 12px; background: #fff; border-top: 1px solid var(--border);
+      padding: 16px; background: #fff; border-top: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
     }
     .btn-primary {
       background: var(--accent); color: white; border: none; padding: 10px 20px;
-      border-radius: 6px; font-weight: 600; cursor: pointer;
+      border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      transition: background 0.2s;
     }
-    .btn-primary:active { background: #2563eb; }
+    .btn-primary:hover { background: #2563eb; }
 
     /* MODAL */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.5);
       display: flex; justify-content: center; align-items: center;
-      z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; padding: 20px;
+      z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s;
     }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-box {
-      background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 450px;
+      background: white; padding: 24px; border-radius: 12px; width: 360px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: scale(0.95); transition: transform 0.2s;
     }
     .modal-overlay.active .modal-box { transform: scale(1); }
-    .modal-box h3 { margin-bottom: 12px; }
-    .modal-box p, .modal-box ul { font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 16px; }
-    .modal-box ul { margin-left: 20px; }
+    .modal-box h3 { margin-bottom: 12px; font-size: 1.2rem; color: #0f172a; }
+    .modal-box p { font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 20px; white-space: pre-line; }
+    .modal-box ul { font-size: 0.85rem; color: #475569; line-height: 1.8; margin: 12px 0 20px 20px; }
+    .modal-box ul li { margin-bottom: 8px; }
+    .modal-box .intro-section { margin-bottom: 16px; }
+    .modal-box .intro-section strong { color: #0f172a; font-size: 0.95rem; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
-    /* --- RESPONSIVE LOGIC --- */
-    /* When screen width is small (Mobile/Tablet Portrait) */
-    @media (max-width: 900px) {
-      body { height: auto; overflow: auto; } /* Allow whole page scroll if needed */
-      main { 
-        flex-direction: column; 
-        height: auto; 
-        overflow: visible; 
-        padding-bottom: 80px; /* Space for scrolling */
-      }
-      
-      .panel { overflow: visible; }
-      
-      /* Force Canvas to top */
-      .visual-pane { 
-        order: 1; 
-        flex: none; 
-        height: auto;
-      }
-      
-      .control-pane { 
-        order: 2; 
-        flex: none; 
-        width: 100%; 
-        max-width: none; 
-      }
-      .scroll-area { max-height: none; overflow: visible; }
-    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Semi Heater <span class="badge">V5 Revised</span></h1>
+    <h1>Semiconductor Heater Design <span class="badge">V5 Pro</span></h1>
     <div style="font-size:0.85rem; color:var(--text-sub);">
-      <b id="stageTitle">1. Basic</b>
+      Stage: <b id="stageTitle">1. Basic</b>
     </div>
   </header>
 
@@ -223,14 +204,16 @@
     <div class="panel visual-pane">
       <div class="panel-header">
         <span>Thermal Simulation</span>
-        <span style="font-size:0.8rem; color:#64748b;">Physics Engine</span>
+        <span style="font-size:0.8rem; color:#64748b;">Real-time Physics Engine</span>
       </div>
       <div class="canvas-wrapper">
         <canvas id="simCanvas" width="800" height="400"></canvas>
-      </div>
-      <div class="legend">
-        <span>🟩 <b>Top Strip:</b> Heater (Tap Here)</span>
-        <span>🟦 <b>Bottom Strip:</b> Cooling (Tap Here)</span>
+        <div class="legend">
+          • <b>Yellow Block:</b> Wafer (Surface Temp)<br/>
+          • <b>Green Box:</b> Heater Layer (Click to Toggle)<br/>
+          • <b>Blue Box:</b> Cooling Line (Click to Toggle)<br/>
+          * Gap & Thickness affect thermal resistance.
+        </div>
       </div>
     </div>
 
@@ -238,6 +221,8 @@
       <div class="panel-header">Configuration</div>
       
       <div class="scroll-area">
+        <div class="section-title">Mission Spec & Status</div>
+        
         <div class="mission-board">
           <div class="mission-row">
             <span class="m-label">🎯 Goal Temp</span>
@@ -260,92 +245,113 @@
           </div>
         </div>
 
-        <div style="margin-top:12px; border-bottom:1px solid #e2e8f0; padding-bottom:12px; margin-bottom:12px;">
-          <div class="control-row">
-            <label>Material Thickness <span class="val" id="txtThick">80 px</span></label>
-            <input type="range" id="slThick" min="50" max="150" step="2" value="80">
-          </div>
-          <div class="control-row">
-            <label>Heater Gap <span class="val" id="txtGap">30 px</span></label>
-            <input type="range" id="slGap" min="10" max="60" step="1" value="30">
-          </div>
-          <div class="control-row">
-            <label>Boundary Zone <span class="val" id="txtBound">40%</span></label>
-            <input type="range" id="slBound" min="20" max="80" step="1" value="40">
-          </div>
-          <div class="control-row">
-            <select id="selMat">
-              <option value="A">Mat A (High Spread, Low Eff)</option>
-              <option value="B" selected>Mat B (Standard)</option>
-              <option value="C">Mat C (Low Spread, High Eff)</option>
-            </select>
-          </div>
+        <div class="section-title">Geometry & Material</div>
+        
+        <div class="control-row">
+          <label>Raw Material Thickness <span class="val" id="txtThick">80 px</span></label>
+          <input type="range" id="slThick" min="50" max="150" step="2" value="80">
+        </div>
+        <div class="control-row">
+          <label>Heater Gap (from Wafer) <span class="val" id="txtGap">30 px</span></label>
+          <input type="range" id="slGap" min="10" max="60" step="1" value="30">
+        </div>
+        <div class="control-row">
+          <label>Inner/Outer Boundary <span class="val" id="txtBound">40%</span></label>
+          <input type="range" id="slBound" min="20" max="80" step="1" value="40">
+        </div>
+        <div class="control-row">
+          <label>Material Property</label>
+          <select id="selMat">
+            <option value="A">Type A (High Spread, Low Eff)</option>
+            <option value="B" selected>Type B (Standard)</option>
+            <option value="C">Type C (Low Spread, High Eff)</option>
+          </select>
         </div>
 
-        <div>
-          <div class="click-control">
-            <div class="click-label">Inner</div>
-            <button class="btn-icon" onclick="adjustParam('inner', -0.05)">-</button>
-            <div class="progress-track">
-              <div class="progress-fill" id="barInner" style="width:15%; background:#ef4444;"></div>
-            </div>
-            <button class="btn-icon" onclick="adjustParam('inner', 0.05)">+</button>
-            <div class="progress-val" id="valInner">0.60</div>
-          </div>
+        <div class="section-title">Power Control</div>
 
-          <div class="click-control">
-            <div class="click-label">Outer</div>
-            <button class="btn-icon" onclick="adjustParam('outer', -0.05)">-</button>
-            <div class="progress-track">
-              <div class="progress-fill" id="barOuter" style="width:10%; background:#f97316;"></div>
-            </div>
-            <button class="btn-icon" onclick="adjustParam('outer', 0.05)">+</button>
-            <div class="progress-val" id="valOuter">0.40</div>
+        <div class="click-control">
+          <div class="click-label">Inner</div>
+          <button class="btn-icon" onclick="adjustParam('inner', -0.05)">-</button>
+          <div class="progress-track">
+            <div class="progress-fill" id="barInner" style="width:15%; background:#ef4444;"></div>
           </div>
+          <button class="btn-icon" onclick="adjustParam('inner', 0.05)">+</button>
+          <div class="progress-val" id="valInner">0.60</div>
+        </div>
 
-          <div class="click-control">
-            <div class="click-label" style="color:#2563eb;">Cooling</div>
-            <button class="btn-icon" onclick="adjustParam('cool', -0.05)">-</button>
-            <div class="progress-track">
-              <div class="progress-fill" id="barCool" style="width:50%; background:#3b82f6;"></div>
-            </div>
-            <button class="btn-icon" onclick="adjustParam('cool', 0.05)">+</button>
-            <div class="progress-val" id="valCool">0.50</div>
+        <div class="click-control">
+          <div class="click-label">Outer</div>
+          <button class="btn-icon" onclick="adjustParam('outer', -0.05)">-</button>
+          <div class="progress-track">
+            <div class="progress-fill" id="barOuter" style="width:10%; background:#f97316;"></div>
           </div>
+          <button class="btn-icon" onclick="adjustParam('outer', 0.05)">+</button>
+          <div class="progress-val" id="valOuter">0.40</div>
+        </div>
+
+        <div class="click-control" style="margin-top:16px;">
+          <div class="click-label" style="color:#2563eb;">Cooling</div>
+          <button class="btn-icon" onclick="adjustParam('cool', -0.05)">-</button>
+          <div class="progress-track">
+            <div class="progress-fill" id="barCool" style="width:50%; background:#3b82f6;"></div>
+          </div>
+          <button class="btn-icon" onclick="adjustParam('cool', 0.05)">+</button>
+          <div class="progress-val" id="valCool">0.50</div>
         </div>
       </div>
 
       <div class="action-bar">
-        <label style="font-size:0.85rem; display:flex; gap:6px; align-items:center; cursor:pointer;">
-          <input type="checkbox" id="chkMirror" checked style="transform:scale(1.2)"> Mirror Symmetry
+        <label style="font-size:0.8rem; display:flex; gap:6px; align-items:center; cursor:pointer;">
+          <input type="checkbox" id="chkMirror" checked> Mirror Symmetry
         </label>
         <button class="btn-primary" id="btnCheck">Check Spec</button>
       </div>
     </div>
   </main>
 
-  <div class="modal-overlay active" id="introModal">
-    <div class="modal-box">
-      <h3>Welcome to Semi Heater Design</h3>
-      <p><strong>Goal:</strong> Design a heater to keep the wafer within Target Temp and Uniformity Spec.</p>
-      <ul>
-        <li><strong>Tap Top Grid (Green Box):</strong> Add Heaters (Red/Orange).</li>
-        <li><strong>Tap Bottom Grid (Blue Box):</strong> Add Cooling Lines.</li>
-        <li><strong>Sliders:</strong> Adjust Geometry & Power.</li>
-      </ul>
-      <div style="text-align:right;">
-        <button class="btn-primary" onclick="startGame()">Start Simulation</button>
-      </div>
-    </div>
-  </div>
-
   <div class="modal-overlay" id="modal">
     <div class="modal-box">
       <h3 id="modalTitle">Result</h3>
       <p id="modalMsg">Content</p>
-      <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button class="btn-icon" style="width:auto; padding:0 12px;" onclick="closeModal()">Close</button>
+      <div class="modal-actions">
+        <button class="btn-icon" style="width:auto; padding:0 12px; font-weight:500;" onclick="closeModal()">Close</button>
         <button class="btn-primary" id="btnNext" style="display:none;" onclick="nextStage()">Next Stage</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay active" id="introModal">
+    <div class="modal-box" style="max-width: 520px;">
+      <h3>Welcome to Semiconductor Heater Design</h3>
+
+      <div class="intro-section">
+        <strong>Game Objective:</strong>
+        <p style="margin-top: 6px;">Design an optimal heater configuration to achieve precise temperature control on a semiconductor wafer. You must meet both the target average temperature AND maintain excellent temperature uniformity across the surface.</p>
+      </div>
+
+      <div class="intro-section">
+        <strong>How to Play:</strong>
+        <ul>
+          <li><strong>Click on green heater cells</strong> to toggle heaters on/off (inner = red, outer = orange)</li>
+          <li><strong>Click on blue cooling cells</strong> to toggle cooling lines on/off</li>
+          <li><strong>Adjust power sliders</strong> to control inner/outer heater power and cooling strength</li>
+          <li><strong>Tune geometry parameters</strong> like material thickness, heater gap, and boundary zones</li>
+          <li><strong>Select materials</strong> with different thermal properties (spreading vs efficiency)</li>
+        </ul>
+      </div>
+
+      <div class="intro-section">
+        <strong>Win Conditions:</strong>
+        <ul>
+          <li>Average temperature must be within the target range (Goal Temp ± tolerance)</li>
+          <li>Temperature uniformity (ΔT = max - min) must be below the spec limit</li>
+          <li>Complete all 3 stages with increasing difficulty!</li>
+        </ul>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="startGame()">Start Game</button>
       </div>
     </div>
   </div>
@@ -355,6 +361,7 @@
     const AMBIENT = 25;
     const LENGTH = 80;    
     const GRID_Y = 5;     
+    const L_SURF = 0;
     const L_HEAT = 1; 
 
     // --- STATE ---
@@ -370,11 +377,15 @@
     let pOuter = 0.40;
     let pCool  = 0.50;
     
-    // Stages
+    // Config: Power Cap
+    const MAX_PWR = 6.0;  // Slightly increased cap
+    const MAX_COOL = 1.0;
+
+    // Stages: Increased Gains and Diffusion
     const stages = [
-      { name: "Stage 1: Basic", target: 180, tol: 15, maxDt: 25, heatGain: 6.0, cond: 0.6 },
-      { name: "Stage 2: Precision", target: 220, tol: 10, maxDt: 15, heatGain: 7.0, cond: 0.7 },
-      { name: "Stage 3: Mastery", target: 250, tol: 8,  maxDt: 12, heatGain: 8.0, cond: 0.8 }
+      { name: "Stage 1: Basic Heating", target: 180, tol: 15, maxDt: 25, heatGain: 6.0, cond: 0.6 },
+      { name: "Stage 2: Precision Control", target: 220, tol: 10, maxDt: 15, heatGain: 7.0, cond: 0.7 },
+      { name: "Stage 3: High Temp & Uniformity", target: 250, tol: 8,  maxDt: 12, heatGain: 8.0, cond: 0.8 }
     ];
     let curStage = 0;
 
@@ -425,28 +436,30 @@
 
       updateStageUI();
       updateUIParams();
-      renderLoop(); 
+      renderLoop(); // Start Loop
     }
 
     // --- LOGIC ---
     function adjustParam(type, delta) {
       if(type === 'inner') {
-        pInner = clamp(pInner + delta, 0, 6.0);
+        pInner = clamp(pInner + delta, 0, MAX_PWR);
         el.valIn.innerText = pInner.toFixed(2);
-        el.barIn.style.width = (pInner/6.0*100) + '%';
+        el.barIn.style.width = (pInner/MAX_PWR*100) + '%';
       } else if(type === 'outer') {
-        pOuter = clamp(pOuter + delta, 0, 6.0);
+        pOuter = clamp(pOuter + delta, 0, MAX_PWR);
         el.valOut.innerText = pOuter.toFixed(2);
-        el.barOut.style.width = (pOuter/6.0*100) + '%';
+        el.barOut.style.width = (pOuter/MAX_PWR*100) + '%';
       } else if(type === 'cool') {
-        pCool = clamp(pCool + delta, 0, 1.0);
+        pCool = clamp(pCool + delta, 0, MAX_COOL);
         el.valCool.innerText = pCool.toFixed(2);
-        el.barCool.style.width = (pCool/1.0*100) + '%';
+        el.barCool.style.width = (pCool/MAX_COOL*100) + '%';
       }
     }
     function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
-    function updateUIParams() { adjustParam('inner', 0); adjustParam('outer', 0); adjustParam('cool', 0); }
+    function updateUIParams() {
+      adjustParam('inner', 0); adjustParam('outer', 0); adjustParam('cool', 0);
+    }
     
     function updateStageUI() {
       const s = stages[curStage];
@@ -455,28 +468,38 @@
       el.dispSpec.innerText = `≤ ${s.maxDt} ℃`;
     }
 
-    // --- PHYSICS ---
+    // --- PHYSICS ENGINE (UPDATED) ---
     function simulationStep() {
       const s = stages[curStage];
+      
+      // Material Properties
       let matK = 1.0; let matH = 1.0;
       const mType = el.mat.value;
-      if(mType === 'A') { matK = 1.4; matH = 0.9; }
-      if(mType === 'C') { matK = 0.6; matH = 1.2; }
+      if(mType === 'A') { matK = 1.4; matH = 0.9; } // Spread fast
+      if(mType === 'C') { matK = 0.6; matH = 1.2; } // Efficient
 
+      // Geometry Factors (Physics)
       const gapVal = parseInt(el.gap.value);
       const thickVal = parseInt(el.thick.value);
       
+      // 1. Heater Gap Effect:
+      // Gap increases -> Less Heat reaches surface directly (heatGain reduced)
+      // Gap increases -> More Spread (conduction effectively higher due to distance)
       const gapFactor = 1.0 - (gapVal - 10) * 0.008; 
       const effectiveGain = s.heatGain * matH * Math.max(0.5, gapFactor);
       
-      const distRatio = 80 / thickVal; 
-      const coolFactor = Math.pow(distRatio, 1.5); 
+      // 2. Cooling Thickness Effect:
+      // Thicker material -> Cooling line is further away -> Cooling Power reduced
+      const distRatio = 80 / thickVal; // Standard 80px
+      const coolFactor = Math.pow(distRatio, 1.5); // Non-linear drop off
+
       const K = s.cond * matK;
 
       for(let y=0; y<GRID_Y; y++) {
         for(let x=0; x<LENGTH; x++) {
           let T = tempGrid[y][x];
           
+          // Diffusion (Spreading)
           let sum = 0, cnt = 0;
           if(x>0) { sum+=tempGrid[y][x-1]; cnt++; }
           if(x<LENGTH-1) { sum+=tempGrid[y][x+1]; cnt++; }
@@ -484,19 +507,29 @@
           if(y<GRID_Y-1) { sum+=tempGrid[y+1][x]; cnt++; }
           let diffusion = cnt ? (sum/cnt - T) * K : 0;
 
+          // Source (Heating)
           let source = 0;
           if(y === L_HEAT) {
              let pwr = innerHeater[x] * pInner + outerHeater[x] * pOuter;
              source += pwr * effectiveGain;
           }
 
-          let sink = 0.005 * (AMBIENT - T); 
+          // Sink (Cooling)
+          let sink = 0.005 * (AMBIENT - T); // Base Ambient Loss
+          
+          // Edge Cooling (Physical)
           const edgeDist = Math.abs(x - LENGTH/2) / (LENGTH/2);
           sink += 0.02 * (edgeDist*edgeDist) * (AMBIENT - T);
 
+          // Active Cooling Line (REVISED)
+          // Applied to heater layer & below for immediate effect
           if(coolingLine[x]) {
-            if(y === 1 || y === 2) sink += 0.4 * pCool * coolFactor * (AMBIENT - T);
-            else if(y === 3) sink += 0.15 * pCool * coolFactor * (AMBIENT - T);
+            if(y === 1 || y === 2) {
+              // Strong cooling near heater, modulated by Thickness
+              sink += 0.4 * pCool * coolFactor * (AMBIENT - T);
+            } else if(y === 3) {
+              sink += 0.15 * pCool * coolFactor * (AMBIENT - T);
+            }
           }
 
           tempGridNext[y][x] = T + diffusion + source + sink;
@@ -505,6 +538,7 @@
 
       let t = tempGrid; tempGrid = tempGridNext; tempGridNext = t;
       for(let x=0; x<LENGTH; x++) surfaceTemp[x] = tempGrid[0][x];
+      
       calcStats();
     }
 
@@ -519,6 +553,7 @@
       el.avg.innerText = stats.avg.toFixed(1) + ' ℃';
       el.unif.innerText = stats.dt.toFixed(1) + ' ℃';
       
+      // Visual Feedback
       const s = stages[curStage];
       const okT = Math.abs(stats.avg - s.target) <= s.tol;
       const okS = stats.dt <= s.maxDt;
@@ -532,12 +567,17 @@
       const thick = parseInt(el.thick.value);
       const gap = parseInt(el.gap.value);
       
+      // Fixed Positions
       const waferTop = 80; 
       const waferH = 12;
       const matTop = waferTop + waferH;
+      
+      // Dynamic Positions
       const matBottom = matTop + thick;
       const heaterTop = matTop + gap;
       const heaterH = 24;
+      
+      // Cooling is anchored to bottom
       const coolH = 24;
       const coolTop = matBottom - coolH - 4;
       
@@ -545,8 +585,10 @@
     }
 
     function renderLoop() {
+      // 1. Physics Multi-step (Smooth Diffusion)
       for(let i=0; i<15; i++) simulationStep();
 
+      // 2. Draw
       const g = getGeometry();
       const cellW = g.w / LENGTH;
       ctx.clearRect(0,0,g.w,g.h);
@@ -561,17 +603,12 @@
       // Wafer
       ctx.fillStyle = "#fde047"; 
       ctx.fillRect(0, g.waferTop, g.w, g.waferH);
-      ctx.strokeStyle = "#eab308"; ctx.strokeRect(0, g.waferTop, g.w, g.waferH);
+      ctx.strokeStyle = "#eab308";
+      ctx.strokeRect(0, g.waferTop, g.w, g.waferH);
 
-      // --- VISUAL GUIDES FOR CLICKING ---
-      // Heater Zone Guide
-      ctx.fillStyle = "rgba(22, 163, 74, 0.1)"; // Light Green
+      // Heater Grid
+      ctx.fillStyle = "rgba(255,255,255,0.2)";
       ctx.fillRect(0, g.heaterTop, g.w, g.heaterH);
-      // Cooling Zone Guide
-      ctx.fillStyle = "rgba(59, 130, 246, 0.1)"; // Light Blue
-      ctx.fillRect(0, g.coolTop, g.w, g.coolH);
-
-      // Heater Cells
       for(let i=0; i<LENGTH; i++) {
         const x = i * cellW;
         if(innerHeater[i]) {
@@ -579,21 +616,10 @@
         } else if(outerHeater[i]) {
           ctx.fillStyle = "#f97316"; ctx.fillRect(x, g.heaterTop, cellW, g.heaterH);
         } else {
-          ctx.strokeStyle = "rgba(0,0,0,0.1)"; ctx.strokeRect(x, g.heaterTop, cellW, g.heaterH);
+          ctx.strokeStyle = "rgba(255,255,255,0.15)"; ctx.strokeRect(x, g.heaterTop, cellW, g.heaterH);
         }
       }
-      
-      // Cooling Cells
-      for(let i=0; i<LENGTH; i++) {
-        const x = i * cellW;
-        if(coolingLine[i]) {
-          ctx.fillStyle = "#3b82f6"; ctx.fillRect(x, g.coolTop, cellW, g.coolH);
-        } else {
-          ctx.strokeStyle = "rgba(0,0,0,0.1)"; ctx.strokeRect(x, g.coolTop, cellW, g.coolH);
-        }
-      }
-
-      // Boundary Line
+      // Inner Boundary Line
       const cx = g.w/2;
       const boundPx = (el.bound.value/100) * (g.w/2);
       ctx.beginPath(); ctx.setLineDash([4,4]); ctx.strokeStyle = "rgba(255,255,255,0.6)";
@@ -601,36 +627,53 @@
       ctx.moveTo(cx+boundPx, g.matTop); ctx.lineTo(cx+boundPx, g.matBottom);
       ctx.stroke(); ctx.setLineDash([]);
 
+      // Cooling Grid
+      ctx.fillStyle = "rgba(255,255,255,0.2)";
+      ctx.fillRect(0, g.coolTop, g.w, g.coolH);
+      for(let i=0; i<LENGTH; i++) {
+        const x = i * cellW;
+        if(coolingLine[i]) {
+          ctx.fillStyle = "#3b82f6"; ctx.fillRect(x, g.coolTop, cellW, g.coolH);
+        } else {
+          ctx.strokeStyle = "rgba(59,130,246, 0.3)"; ctx.strokeRect(x, g.coolTop, cellW, g.coolH);
+        }
+      }
+
       drawGraph(g);
       requestAnimationFrame(renderLoop);
     }
 
     function drawGraph(g) {
       const baseY = g.waferTop - 25;
-      const scaleY = 30; 
-      
+      const scaleY = 30; // 1 unit (10deg diff) = 30px
+      const s = stages[curStage];
+
       ctx.beginPath(); ctx.strokeStyle = "#0f172a"; ctx.lineWidth = 2.5;
       for(let i=0; i<LENGTH; i++) {
         const x = (i + 0.5) * (g.w / LENGTH);
         const dev = surfaceTemp[i] - stats.avg;
         const norm = dev / 10.0;
+        // CLAMP: Keep inside screen
         const rawY = baseY - (norm * scaleY);
         const y = Math.max(10, Math.min(baseY+40, rawY));
+        
         if(i===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
       
-      drawDot(stats.min, "#3b82f6", g, scaleY, baseY);
-      drawDot(stats.max, "#ef4444", g, scaleY, baseY);
+      // Min/Max Dots
+      drawDot(stats.min, "#3b82f6", g, scaleY, baseY, true);
+      drawDot(stats.max, "#ef4444", g, scaleY, baseY, false);
     }
 
-    function drawDot(val, color, g, scaleY, baseY) {
+    function drawDot(val, color, g, scaleY, baseY, isMin) {
       let idx = -1; let closest = 999;
       for(let i=0; i<LENGTH; i++) {
         let diff = Math.abs(surfaceTemp[i]-val);
         if(diff < closest) { closest = diff; idx = i; }
       }
       if(idx<0) return;
+      
       const x = (idx + 0.5) * (g.w / LENGTH);
       const dev = val - stats.avg;
       const rawY = baseY - (dev/10.0 * scaleY);
@@ -638,36 +681,20 @@
 
       ctx.beginPath(); ctx.fillStyle = color;
       ctx.arc(x, y, 5, 0, Math.PI*2); ctx.fill();
+      
+      // Text clamp logic
       ctx.font = "bold 12px sans-serif"; ctx.fillStyle = "#0f172a";
       const txtY = (y < 25) ? y + 16 : y - 10;
       ctx.fillText(val.toFixed(0), x + 8, txtY);
     }
 
-    // --- INPUT HANDLER (THE FIX) ---
-    function handleInput(e) {
-      // Prevent default to stop scrolling/zooming when interacting with canvas
-      if (e.type === 'touchstart') e.preventDefault();
-
-      // Get exact sizing of the canvas on screen
+    // --- INPUT HANDLER ---
+    canvas.addEventListener('mousedown', (e) => {
       const rect = canvas.getBoundingClientRect();
-      
-      // Calculate scaling factors (Internal Resolution / Visual Size)
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      
-      // Determine Client coordinates (Touch or Mouse)
-      let clientX, clientY;
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        clientX = e.changedTouches[0].clientX;
-        clientY = e.changedTouches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-
-      // Map to internal grid
-      const x = (clientX - rect.left) * scaleX;
-      const y = (clientY - rect.top) * scaleY;
+      const sx = canvas.width / rect.width;
+      const sy = canvas.height / rect.height;
+      const x = (e.clientX - rect.left) * sx;
+      const y = (e.clientY - rect.top) * sy;
       
       const g = getGeometry();
       const idx = Math.floor(x / (g.w/LENGTH));
@@ -676,7 +703,7 @@
       const mirror = el.mirror.checked;
       const mIdx = LENGTH - 1 - idx;
       
-      // Toggle Heater (Hitbox expanded slightly for ease)
+      // Toggle Heater
       if(y >= g.heaterTop && y <= g.heaterTop + g.heaterH) {
         const cx = g.w/2;
         const dist = Math.abs(x - cx);
@@ -698,28 +725,24 @@
         coolingLine[idx] = v?1:0;
         if(mirror) coolingLine[mIdx] = v?1:0;
       }
-    }
+    });
 
-    // Add listeners
-    canvas.addEventListener('mousedown', handleInput);
-    canvas.addEventListener('touchstart', handleInput, {passive: false});
-
-    // --- GAME FLOW ---
+    // --- GAME LOGIC ---
     document.getElementById('btnCheck').addEventListener('click', () => {
       const s = stages[curStage];
       const okT = Math.abs(stats.avg - s.target) <= s.tol;
       const okS = stats.dt <= s.maxDt;
       
       if(okT && okS) {
-        el.mTitle.innerText = "Success! 🎉";
-        el.mMsg.innerText = `Avg: ${stats.avg.toFixed(1)} (Target ${s.target}±${s.tol})\nUniformity: ${stats.dt.toFixed(1)} (Spec ≤${s.maxDt})`;
+        el.mTitle.innerText = "Mission Success! 🎉";
+        el.mMsg.innerText = `Great Work!\nAvg: ${stats.avg.toFixed(1)} (Target ${s.target}±${s.tol})\nUniformity: ${stats.dt.toFixed(1)} (Spec ≤${s.maxDt})`;
         el.btnNext.style.display = (curStage < stages.length-1) ? 'block' : 'none';
-        if(curStage === stages.length-1) el.mMsg.innerText += "\n\nAll Stages Cleared!";
+        if(curStage === stages.length-1) el.mMsg.innerText += "\n\nAll Stages Cleared! You are the Thermal Master.";
       } else {
         el.mTitle.innerText = "Spec Out ⚠️";
         let r = "";
-        if(!okT) r += `- Temp Miss (${Math.abs(stats.avg-s.target).toFixed(1)} off)\n`;
-        if(!okS) r += `- Uniformity Miss (ΔT ${stats.dt.toFixed(1)})\n`;
+        if(!okT) r += `- Temp Target Miss (${Math.abs(stats.avg-s.target).toFixed(1)} off)\n`;
+        if(!okS) r += `- Uniformity Miss (ΔT ${stats.dt.toFixed(1)} > ${s.maxDt})\n`;
         el.mMsg.innerText = "Check your spec:\n" + r;
         el.btnNext.style.display = 'none';
       }
@@ -729,11 +752,15 @@
     function closeModal() { el.modal.classList.remove('active'); }
     function nextStage() {
       closeModal(); curStage++;
+      // Reset Grid
       tempGrid = Array.from({length: GRID_Y}, () => new Array(LENGTH).fill(AMBIENT));
       surfaceTemp.fill(AMBIENT);
       updateStageUI();
     }
-    function startGame() { document.getElementById('introModal').classList.remove('active'); }
+
+    function startGame() {
+      document.getElementById('introModal').classList.remove('active');
+    }
 
     init();
   </script>

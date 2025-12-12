@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stephen's Hungry Caterpillar</title>
+    <title>Stephen's Creative Flow</title>
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap');
+        /* 폰트를 좀 더 모던하고 크리에이티브한 느낌으로 변경 */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #fcfcfc;
-            font-family: 'Gaegu', cursive, sans-serif;
-            touch-action: none; /* Prevent mobile touch zoom */
+            background-color: #121212; /* 다크 모드 배경 */
+            font-family: 'Montserrat', sans-serif;
+            touch-action: none;
+            color: white;
         }
 
-        /* UI Layer (score, etc) */
+        /* UI Layer */
         #uiLayer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -29,17 +31,17 @@
         .header-info {
             display: flex;
             justify-content: space-between;
-            font-size: 1.5rem;
-            color: #333;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        #missionText { color: #d32f2f; font-weight: bold; }
+        #missionText { color: #00d2d3; font-weight: bold; } /* 민트색 포인트 */
 
         /* Start/Game Over Screen */
         #overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(18, 18, 18, 0.95); /* 어두운 배경 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -50,66 +52,131 @@
         }
 
         h1 {
-            font-size: 3.5rem;
-            color: #d32f2f;
+            font-size: 3rem;
+            background: linear-gradient(to right, #00d2d3, #5f27cd); /* 그라데이션 텍스트 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 0 0 10px 0;
-            text-shadow: 3px 3px #a5d6a7;
+            font-weight: 900;
         }
 
-        .desc { font-size: 1.2rem; margin-bottom: 20px; color: #555; }
+        .desc { font-size: 1rem; margin-bottom: 20px; color: #bbb; letter-spacing: 1px; }
+
+        /* 게임 가이드 박스 디자인 변경 */
+        .guide-box {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            display: inline-block;
+            border: 1px solid #5f27cd;
+            color: #ddd;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
 
         button {
-            background: #66bb6a;
+            background: linear-gradient(45deg, #5f27cd, #341f97); /* 보라색 버튼 */
             border: none;
             padding: 15px 40px;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: white;
             border-radius: 50px;
-            font-family: 'Gaegu', cursive;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 0 15px rgba(95, 39, 205, 0.4);
             margin-top: 10px;
             transition: transform 0.1s;
         }
-        button:active { transform: scale(0.95); background: #43a047; }
+        button:active { transform: scale(0.95); }
 
-        /* SoundCloud (hidden, audio only) */
         #sc-widget {
             position: absolute;
-            bottom: -500px; /* 화면 밖으로 숨김 */
+            bottom: -500px;
             left: 0;
             opacity: 0;
         }
 
-        /* Music indicator (bottom right) */
         #musicIndicator {
             position: absolute;
             bottom: 20px;
             right: 20px;
-            background: rgba(255,255,255,0.8);
+            background: rgba(0,0,0,0.7);
+            color: white;
             padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             z-index: 15;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 1px solid #333;
         }
 
-        /* Mobile control buttons */
         #controls {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
-            height: 100%; /* Full screen touch area */
+            height: 100%;
             display: flex;
-            z-index: 5; /* Above canvas, below UI */
+            z-index: 5;
         }
-        .ctrl-btn { flex: 1; opacity: 0; } /* Transparent buttons */
+        .ctrl-btn { flex: 1; opacity: 0; }
+
+        /* 사용자 정의 버튼 스타일 (Game Over 화면) */
+        .action-btn {
+            font-size: 1rem;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin: 5px;
+        }
+
+        /* === BGM Controller === */
+        .bgm-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 2px solid #5f27cd;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 25;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .bgm-control:hover {
+            transform: scale(1.1);
+            background-color: #5f27cd;
+        }
+
+        .bgm-control svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .bgm-playing {
+            background-color: #5f27cd;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(95, 39, 205, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(95, 39, 205, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(95, 39, 205, 0); }
+        }
 
     </style>
 </head>
 <body>
 
     <iframe id="sc-widget" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
-        src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/pildu-yoon&color=%23ff5500&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=false">
+        src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/pildu-yoon&color=%235f27cd&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=false">
     </iframe>
 
     <div id="uiLayer">
@@ -123,33 +190,34 @@
 
     <div id="overlay">
         <div id="startScreen">
-            <h1>The Hungry Caterpillar</h1>
+            <h1>Creative Flow</h1>
             <p class="desc">Stephen Yoon's Interactive Art</p>
-            <div style="background:#fff8e1; padding:20px; border-radius:15px; margin-bottom:20px; text-align:left; display:inline-block; border:2px dashed #ffcc80;">
-                1. Eat fruits 🍎, 🍐 in order.<br>
-                2. Eating 🍰 junk food makes you <span style="color:red">grow HUGE and FAST!</span><br>
-                3. Eating 🍃 leaves heals you and resets to the beginning.
+            <div class="guide-box">
+                1. Collect Inspiration: 🎵, 🎹, 💿<br>
+                2. ☕ <strong>Caffeine(Coffee)</strong> makes you<br> 
+                   <span style="color:#ff6b6b">Hyper-Fast & Productive!</span> (Rampage)<br>
+                3. 🛌 <strong>Rest(Bed)</strong> heals burnout & resets.
             </div>
             <br>
             <button onclick="startGameWithMusic()">PLAY & MUSIC START ▶</button>
         </div>
 
-        <div id="countdown" style="display:none; font-size:8rem; color:#fb8c00; font-weight:bold;">3</div>
+        <div id="countdown" style="display:none; font-size:8rem; color:#00d2d3; font-weight:bold;">3</div>
 
         <div id="gameOverScreen" style="display:none;">
-            <h1>Game Over</h1>
-            <p id="finalScore" style="font-size:1.5rem;">0 points</p>
+            <h1 style="font-size: 2.5rem; background:none; -webkit-text-fill-color: #ff6b6b; color:#ff6b6b;">BURNOUT</h1>
+            <p id="finalScore" style="font-size:1.5rem; color:white;">0 points</p>
 
-            <input type="text" id="pName" placeholder="Enter your name" style="padding:10px; font-size:1.2rem; text-align:center; border:2px solid #81c784; border-radius:10px; margin-bottom:15px;">
+            <input type="text" id="pName" placeholder="Enter your name" style="padding:10px; font-size:1.2rem; text-align:center; border:2px solid #5f27cd; background:transparent; color:white; border-radius:10px; margin-bottom:15px; outline:none;">
             <br>
 
             <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button onclick="saveAndPlayAgain()" style="background:#66bb6a;">💾 Save & Play Again</button>
-                <button onclick="playAgain()" style="background:#42a5f5;">🔄 Play Again</button>
-                <button onclick="quitToHome()" style="background:#ef5350;">🏠 Quit to Home</button>
+                <button onclick="saveAndPlayAgain()" class="action-btn" style="background:#5f27cd;">💾 Save & Play Again</button>
+                <button onclick="playAgain()" class="action-btn" style="background:#0984e3;">🔄 Play Again</button>
+                <button onclick="quitToHome()" class="action-btn" style="background:#d63031;">🏠 Quit to Home</button>
             </div>
 
-            <div id="rankBox" style="margin-top:20px; background:#fff; padding:15px; border-radius:10px; width:280px; text-align:left; border:1px solid #ddd;"></div>
+            <div id="rankBox" style="margin-top:20px; background:rgba(255,255,255,0.1); color:#ccc; padding:15px; border-radius:10px; width:280px; text-align:left; border:1px solid #333;"></div>
         </div>
     </div>
 
@@ -160,15 +228,54 @@
         <div id="rightBtn" class="ctrl-btn"></div>
     </div>
 
+    <div id="bgm-toggle" class="bgm-control" title="Play/Pause Background Music">
+        <svg id="icon-play" viewBox="0 0 24 24" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </div>
+
     <script>
         // === 1. SoundCloud Control ===
         var widgetIframe = document.getElementById('sc-widget');
         var widget = SC.Widget(widgetIframe);
+        var bgmBtn = document.getElementById('bgm-toggle');
+        var iconPlay = document.getElementById('icon-play');
+        var iconPause = document.getElementById('icon-pause');
+        var isMusicPlaying = false;
+
+        // Widget event listeners
+        widget.bind(SC.Widget.Events.READY, function() {
+            widget.setVolume(30);
+        });
+
+        widget.bind(SC.Widget.Events.PLAY, function() {
+            isMusicPlaying = true;
+            updateMusicButton();
+        });
+
+        widget.bind(SC.Widget.Events.PAUSE, function() {
+            isMusicPlaying = false;
+            updateMusicButton();
+        });
+
+        // Toggle button click handler
+        bgmBtn.addEventListener('click', function() {
+            widget.toggle();
+        });
+
+        function updateMusicButton() {
+            if (isMusicPlaying) {
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
+                bgmBtn.classList.add('bgm-playing');
+            } else {
+                iconPlay.style.display = 'block';
+                iconPause.style.display = 'none';
+                bgmBtn.classList.remove('bgm-playing');
+            }
+        }
 
         function startGameWithMusic() {
-            // Attempt to play music
             widget.play();
-            // Call game start sequence
             startSequence();
         }
 
@@ -181,35 +288,31 @@
         let speed = 2.2; 
         let turnSpeed = 0.08;
         let snakeWidth = 14; 
-        
-        // Growth related (Important: stores how much more to grow)
         let growPending = 0;
 
-        // State
         let isTurningLeft = false;
         let isTurningRight = false;
         let gameActive = false;
         let score = 0;
         let frameCount = 0;
 
-        // Food order
+        // === CHANGED: Food items mapped to Music/Creative Theme ===
         const stages = [
-            { name: "apple", emoji: "🍎", count: 1 },
-            { name: "pear", emoji: "🍐", count: 2 },
-            { name: "plum", emoji: "🫐", count: 3 },
-            { name: "strawberry", emoji: "🍓", count: 4 },
-            { name: "orange", emoji: "🍊", count: 5 },
-            { name: "junk", emoji: "junk", count: 10 }, // Junk food stage
-            { name: "leaf", emoji: "🍃", count: 1 }      // Reset
+            { name: "note", emoji: "🎵", count: 1 },
+            { name: "piano", emoji: "🎹", count: 2 },
+            { name: "cd", emoji: "💿", count: 3 },
+            { name: "guitar", emoji: "🎸", count: 4 },
+            { name: "mic", emoji: "🎤", count: 5 },
+            { name: "caffeine", emoji: "coffee", count: 10 }, // Was Junk -> Caffeine
+            { name: "rest", emoji: "🛌", count: 1 }      // Was Leaf -> Rest
         ];
-        const junkList = ['🍰','🍦','🍭','🍔','🍕','🍩','🌭','🍟'];
+        const junkList = ['☕','🥤','🔥','⚡','💊']; // Caffeine Items
 
         let stageIdx = 0;
         let eatenCount = 0;
         let food = { x: 0, y: 0, emoji: "", size: 20 };
-        let isSick = false; // Gets sick after eating junk food
+        let isSick = false; // "Sick" means "Caffeine Overload" here
 
-        // Responsive canvas
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -217,66 +320,26 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // Draw background (Eric Carle style) - Drawing every frame is slow, so skip background canvas and handle efficiently in draw function
+        // === CHANGED: Draw Background (Dark Studio Vibe) ===
         function drawBackground() {
-            // 1. Paper texture (light beige)
-            ctx.fillStyle = "#fffdf5";
+            // Dark Gradient Background
+            let grd = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grd.addColorStop(0, "#0f0c29"); // Deep Blue/Black
+            grd.addColorStop(1, "#302b63"); // Purple
+            ctx.fillStyle = grd;
             ctx.fillRect(0,0, canvas.width, canvas.height);
 
-            // 2. Bumpy green hills (bottom)
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height);
-            ctx.lineTo(0, canvas.height * 0.7);
-            
-            // Hills represented with Bezier curves
-            ctx.bezierCurveTo(
-                canvas.width * 0.3, canvas.height * 0.6, 
-                canvas.width * 0.6, canvas.height * 0.8, 
-                canvas.width, canvas.height * 0.65
-            );
-            ctx.lineTo(canvas.width, canvas.height);
-            ctx.closePath();
-            ctx.fillStyle = "#c5e1a5"; // Light green
-            ctx.fill();
-
-            // 3. Brush stroke feel (add texture with transparent circles)
-            ctx.save();
-            ctx.globalAlpha = 0.1;
-            ctx.fillStyle = "#33691e";
-            for(let i=0; i<10; i++) {
-                // Sparsely placed at fixed positions
-                let x = (canvas.width / 10) * i;
-                let y = canvas.height * 0.8 + Math.sin(i)*50;
+            // Simple Star/Particles effect
+            ctx.fillStyle = "#ffffff";
+            for(let i=0; i<15; i++) {
+                let x = (frameCount * 0.2 + i * 150) % canvas.width;
+                let y = (i * 70 + Math.sin(frameCount*0.02 + i)*30) % canvas.height;
+                ctx.globalAlpha = Math.abs(Math.sin(frameCount*0.05 + i)) * 0.5;
                 ctx.beginPath();
-                ctx.arc(x, y, 60, 0, Math.PI*2);
+                ctx.arc(x, y, 2, 0, Math.PI*2);
                 ctx.fill();
             }
-            ctx.restore();
-
-            // 4. Sun (top right) - brush stroke feel
-            let sunX = canvas.width - 80;
-            let sunY = 80;
-            
-            // Sun body
-            ctx.beginPath();
-            ctx.arc(sunX, sunY, 40, 0, Math.PI*2);
-            ctx.fillStyle = "#ffb74d";
-            ctx.fill();
-            
-            // Sun rays (hand-drawn feel)
-            ctx.strokeStyle = "#ff9800";
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            for(let i=0; i<8; i++) {
-                let ang = (Math.PI*2 / 8) * i;
-                let sx = sunX + Math.cos(ang) * 50;
-                let sy = sunY + Math.sin(ang) * 50;
-                let ex = sunX + Math.cos(ang) * 70;
-                let ey = sunY + Math.sin(ang) * 70;
-                ctx.moveTo(sx, sy);
-                ctx.lineTo(ex, ey);
-            }
-            ctx.stroke();
+            ctx.globalAlpha = 1.0;
         }
 
         function startSequence() {
@@ -302,7 +365,6 @@
 
         function initGame() {
             snake = [];
-            // Starting length
             for(let i=0; i<30; i++) {
                 snake.push({x: canvas.width/2 - i*2, y: canvas.height/2});
             }
@@ -323,21 +385,17 @@
 
         function spawnFood() {
             const st = stages[stageIdx];
-            // Determine emoji
-            if(st.name === 'junk') {
+            if(st.name === 'caffeine') {
                 food.emoji = junkList[Math.floor(Math.random()*junkList.length)];
-                // Junk food has varying sizes (larger = grows more)
-                food.size = Math.random() * 20 + 25; // 25~45
-            } else if(st.name === 'leaf') {
-                food.emoji = "🍃";
+                food.size = Math.random() * 20 + 25; 
+            } else if(st.name === 'rest') {
+                food.emoji = "🛌";
                 food.size = 30;
             } else {
                 food.emoji = st.emoji;
-                // Fruits also have slightly varying sizes
-                food.size = Math.random() * 10 + 20; // 20~30
+                food.size = Math.random() * 10 + 20;
             }
 
-            // Position
             food.x = Math.random() * (canvas.width - 60) + 30;
             food.y = Math.random() * (canvas.height - 60) + 30;
         }
@@ -345,12 +403,13 @@
         function updateMission() {
             const st = stages[stageIdx];
             const t = document.getElementById('missionText');
-            if(st.name === 'junk') t.innerText = "😵 Rampage! Eat junk food!";
-            else if(st.name === 'leaf') t.innerText = "🌿 Find the leaf!";
+            // Changed Text for Creative Theme
+            if(st.name === 'caffeine') t.innerText = "⚡ Caffeine Rush! Work Harder!";
+            else if(st.name === 'rest') t.innerText = "🛌 Find Rest to Reset!";
             else t.innerText = `${st.emoji} ${st.count - eatenCount} left`;
         }
 
-        // === Controls ===
+        // Controls (Preserved)
         document.addEventListener('keydown', e=>{
             if(e.key==='ArrowLeft') isTurningLeft=true;
             if(e.key==='ArrowRight') isTurningRight=true;
@@ -359,7 +418,6 @@
             if(e.key==='ArrowLeft') isTurningLeft=false;
             if(e.key==='ArrowRight') isTurningRight=false;
         });
-        // Mobile
         const lb=document.getElementById('leftBtn');
         const rb=document.getElementById('rightBtn');
         const handleTouch = (btn, state) => {
@@ -371,7 +429,6 @@
         handleTouch(lb, true);
         handleTouch(rb, true);
 
-
         function update() {
             if(isTurningLeft) angle -= turnSpeed;
             if(isTurningRight) angle += turnSpeed;
@@ -380,29 +437,22 @@
             let nx = h.x + Math.cos(angle)*speed;
             let ny = h.y + Math.sin(angle)*speed;
 
-            // Wall collision
             if(nx<0||nx>canvas.width||ny<0||ny>canvas.height) { gameOver(); return; }
 
-            // Body collision
             for(let i=20; i<snake.length; i++){
                 let dist = Math.hypot(nx-snake[i].x, ny-snake[i].y);
                 if(dist < snakeWidth) { gameOver(); return; }
             }
 
-            // Movement (add head)
             snake.unshift({x:nx, y:ny});
 
-            // Growth logic (Important!)
-            // If growPending remains, don't cut tail -> body gets longer
             if(growPending > 0) {
                 growPending--;
             } else {
-                snake.pop(); // Normally remove tail
+                snake.pop(); 
             }
 
-            // Eating
             let d = Math.hypot(nx-food.x, ny-food.y);
-            // Detection range based on food size
             if(d < food.size/1.5 + snakeWidth) {
                 eat();
             }
@@ -411,42 +461,36 @@
         function eat() {
             const st = stages[stageIdx];
 
-            // 1. Score and sound
             score += Math.floor(food.size);
             
-            // 2. Determine growth amount (proportional to food size)
             let growAmount = Math.floor(food.size); 
             
-            // Junk food grows 3x! (gets really long)
-            if(st.name === 'junk') {
+            // Caffeine Stage (was Junk)
+            if(st.name === 'caffeine') {
                 growAmount *= 3; 
-                speed += 0.2; // Speed increases
-                isSick = true;
+                speed += 0.2; 
+                isSick = true; // Visual effect trigger
             }
 
-            // Leaf (reset)
-            if(st.name === 'leaf') {
-                // Reset speed
+            // Rest Stage (was Leaf)
+            if(st.name === 'rest') {
                 speed = 2.2;
                 isSick = false;
                 growAmount = 0; 
-                // Reduce body length moderately (too long causes continuous death)
                 if(snake.length > 50) {
-                   snake.splice(50); // Cut everything after 50
+                   snake.splice(50); 
                 }
                 
-                // Return to beginning (infinite loop)
                 stageIdx = 0;
                 eatenCount = 0;
                 spawnFood();
                 updateMission();
                 document.getElementById('scoreText').innerText = score;
-                return; // Skip logic below
+                return; 
             }
 
-            growPending += growAmount; // Reserve growth
+            growPending += growAmount; 
 
-            // Stage progression
             eatenCount++;
             if(eatenCount >= st.count) {
                 stageIdx++;
@@ -459,26 +503,24 @@
         }
 
         function draw() {
-            // Draw background (every frame)
             drawBackground();
 
             // Food
             ctx.font = `${food.size*2}px serif`;
             ctx.textAlign='center'; ctx.textBaseline='middle';
-            ctx.shadowBlur=10; ctx.shadowColor="rgba(0,0,0,0.2)";
+            ctx.shadowBlur=10; ctx.shadowColor="rgba(255,255,255,0.5)";
             ctx.fillText(food.emoji, food.x, food.y);
             ctx.shadowBlur=0;
 
             // Snake
             for(let i=snake.length-1; i>=0; i--) {
-                if(i%3===0) { // Segments
+                if(i%3===0) { 
                     let p = snake[i];
                     ctx.beginPath();
-                    // Color: yellow/olive if sick, green if healthy
-                    if(isSick) ctx.fillStyle = (i%6===0)?"#d4e157":"#afb42b";
-                    else ctx.fillStyle = (i%6===0)?"#66bb6a":"#43a047";
+                    // Color Change: Red/Pink (Overloaded) vs Mint/Green (Healthy)
+                    if(isSick) ctx.fillStyle = (i%6===0)?"#ff7675":"#d63031"; 
+                    else ctx.fillStyle = (i%6===0)?"#55efc4":"#00b894"; 
 
-                    // Wiggle effect
                     let wob = Math.sin(frameCount*0.2 + i)*2;
                     ctx.ellipse(p.x, p.y, snakeWidth+wob, snakeWidth, angle, 0, Math.PI*2);
                     ctx.fill();
@@ -487,23 +529,20 @@
             
             // Head
             let h = snake[0];
-            ctx.fillStyle = isSick ? "#fbc02d" : "#d32f2f"; // Yellow head if sick
+            ctx.fillStyle = isSick ? "#ff9f43" : "#6c5ce7"; // Orange (Overload) vs Purple (Normal)
             ctx.beginPath();
             ctx.ellipse(h.x, h.y, snakeWidth*1.5, snakeWidth*1.4, angle, 0, Math.PI*2);
             ctx.fill();
 
-            // Eyes
+            // Eyes (Simpler, more digital look)
             let eyeOff = snakeWidth*0.7;
             let ex1=h.x+Math.cos(angle-0.5)*eyeOff;
             let ey1=h.y+Math.sin(angle-0.5)*eyeOff;
             let ex2=h.x+Math.cos(angle+0.5)*eyeOff;
             let ey2=h.y+Math.sin(angle+0.5)*eyeOff;
             ctx.fillStyle="#fff";
-            ctx.beginPath(); ctx.arc(ex1,ey1,5,0,Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(ex2,ey2,5,0,Math.PI*2); ctx.fill();
-            ctx.fillStyle="#000";
-            ctx.beginPath(); ctx.arc(ex1,ey1,2,0,Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(ex2,ey2,2,0,Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(ex1,ey1,4,0,Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(ex2,ey2,4,0,Math.PI*2); ctx.fill();
 
             frameCount++;
         }
@@ -525,6 +564,7 @@
             loadRank();
         }
 
+        // === User Defined Logic (Preserved) ===
         function saveRecord() {
             let name = document.getElementById('pName').value || "Anonymous";
             let list = JSON.parse(localStorage.getItem('catRank')) || [];
