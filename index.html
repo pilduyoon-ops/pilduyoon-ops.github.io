@@ -619,83 +619,175 @@
     <script>
         // --- 1. YouTube Background Settings ---
         let player;
-        const START_TIME = 15; 
+        let playerReady = false;
+        let playAttempts = 0;
+        const START_TIME = 15;
+        const MAX_PLAY_ATTEMPTS = 5;
+
+        // YouTube API가 로드되기 전에 미리 준비
+        window.YT = window.YT || {};
+        window.YT.ready = window.YT.ready || function(callback) {
+            if (window.YT.Player) {
+                callback();
+            } else {
+                setTimeout(function() {
+                    window.YT.ready(callback);
+                }, 100);
+            }
+        };
 
         function onYouTubeIframeAPIReady() {
+            console.log('YouTube API Ready');
             player = new YT.Player('youtube-player', {
                 height: '100%',
                 width: '100%',
                 videoId: 'Y9zSf1NgMKs',
                 playerVars: {
-                    'autoplay': 1,       
-                    'mute': 1,           
-                    'controls': 0,       
-                    'modestbranding': 1, 
-                    'fs': 0,             
-                    'rel': 0,            
-                    'showinfo': 0,       
-                    'disablekb': 1,      
-                    'iv_load_policy': 3, 
-                    'playsinline': 1,    
+                    'autoplay': 1,
+                    'mute': 1,
+                    'controls': 0,
+                    'modestbranding': 1,
+                    'fs': 0,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'disablekb': 1,
+                    'iv_load_policy': 3,
+                    'playsinline': 1,
+                    'enablejsapi': 1,
+                    'origin': window.location.origin
                 },
                 events: {
                     'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
                 }
             });
         }
 
         function onPlayerReady(event) {
+            console.log('Player Ready');
+            playerReady = true;
             event.target.mute();
-            // Try to play immediately
-            event.target.seekTo(START_TIME, true);
+            event.target.setVolume(0);
 
-            // Attempt playback with retry logic
-            attemptPlay(event.target);
+            // 즉시 재생 시도
+            setTimeout(function() {
+                event.target.seekTo(START_TIME, true);
+                attemptPlay(event.target);
+            }, 100);
         }
 
         function attemptPlay(target) {
+            if (!target || playAttempts >= MAX_PLAY_ATTEMPTS) {
+                console.log('Max play attempts reached or no target');
+                return;
+            }
+
+            playAttempts++;
+            console.log('Attempt to play: ' + playAttempts);
+
             try {
                 target.playVideo();
 
-                // Double-check after a short delay
+                // 상태 확인 및 재시도
                 setTimeout(function() {
-                    if (player && player.getPlayerState() !== YT.PlayerState.PLAYING) {
-                        player.playVideo();
+                    if (player && playerReady) {
+                        var state = player.getPlayerState();
+                        console.log('Player state after attempt:', state);
+
+                        if (state !== YT.PlayerState.PLAYING && state !== YT.PlayerState.BUFFERING) {
+                            console.log('Not playing, retrying...');
+                            attemptPlay(player);
+                        } else {
+                            console.log('Video playing successfully');
+                            playAttempts = 0; // 성공시 리셋
+                        }
                     }
-                }, 1000);
+                }, 1500);
             } catch (e) {
-                console.log('Autoplay blocked, retrying...');
-                // Retry after user scrolls or interacts
-                document.addEventListener('click', function() {
-                    if (player) player.playVideo();
-                }, { once: true });
+                console.log('Autoplay blocked:', e);
+                setupUserInteractionListeners();
             }
         }
 
+        function setupUserInteractionListeners() {
+            // 여러 이벤트에 리스너 추가
+            var events = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
+
+            events.forEach(function(eventType) {
+                document.addEventListener(eventType, function startVideo() {
+                    if (player && playerReady) {
+                        console.log('User interaction detected:', eventType);
+                        player.playVideo();
+
+                        // 한번만 실행되도록 모든 이벤트 제거
+                        events.forEach(function(et) {
+                            document.removeEventListener(et, startVideo);
+                        });
+                    }
+                }, { once: true, passive: true });
+            });
+        }
+
         function onPlayerStateChange(event) {
+            console.log('Player state changed:', event.data);
+
+            // 영상 끝남
             if (event.data === YT.PlayerState.ENDED) {
                 player.seekTo(START_TIME, true);
                 player.playVideo();
             }
-            // Only force play if it gets paused unexpectedly (not by user)
+
+            // 일시정지됨 - 다시 재생
             if (event.data === YT.PlayerState.PAUSED) {
-                // Small delay to avoid fighting with legitimate pauses
                 setTimeout(function() {
                     if (player.getPlayerState() === YT.PlayerState.PAUSED) {
+                        console.log('Video paused, restarting...');
                         player.playVideo();
                     }
                 }, 500);
             }
-            // Handle buffering state
+
+            // 버퍼링 중
             if (event.data === YT.PlayerState.BUFFERING) {
                 setTimeout(function() {
                     if (player.getPlayerState() === YT.PlayerState.BUFFERING) {
+                        console.log('Still buffering, forcing play...');
                         player.playVideo();
                     }
-                }, 2000);
+                }, 3000);
+            }
+
+            // 준비되지 않음
+            if (event.data === YT.PlayerState.CUED) {
+                setTimeout(function() {
+                    player.playVideo();
+                }, 500);
             }
         }
+
+        function onPlayerError(event) {
+            console.error('YouTube Player Error:', event.data);
+            // 에러 발생시 재시도
+            setTimeout(function() {
+                if (player) {
+                    player.loadVideoById({
+                        videoId: 'Y9zSf1NgMKs',
+                        startSeconds: START_TIME
+                    });
+                }
+            }, 3000);
+        }
+
+        // 페이지 로드 완료 후 추가 재생 시도
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (player && playerReady && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                    console.log('Page loaded, checking video status...');
+                    player.playVideo();
+                }
+            }, 2000);
+        });
 
         // --- 2. BGM Settings (SoundCloud) ---
         var widgetIframe = document.getElementById('sc-widget');
