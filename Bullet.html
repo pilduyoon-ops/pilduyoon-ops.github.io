@@ -275,8 +275,11 @@
 
         // Mobile support
         let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        let isAndroid = /Android/i.test(navigator.userAgent);
+        let isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
         let tiltX = 0, tiltY = 0;
         let touchActive = false;
+        let orientationEnabled = false;
 
         // Scale factor for mobile (모바일에서 크기 조정)
         let scaleFactor = 1.0;
@@ -351,25 +354,51 @@
         // Mobile: Device Orientation (기울기 센서)
         if (window.DeviceOrientationEvent) {
             window.addEventListener('deviceorientation', function(event) {
-                if (gameState === 'PLAYING' && isMobile) {
-                    // gamma: 좌우 기울기 (-90 ~ 90)
-                    // beta: 앞뒤 기울기 (-180 ~ 180)
-                    let gamma = event.gamma || 0; // 좌우
-                    let beta = event.beta || 0;   // 앞뒤
+                if (gameState === 'PLAYING' && isMobile && orientationEnabled) {
+                    let gamma = event.gamma || 0; // 좌우 기울기 (-90 ~ 90)
+                    let beta = event.beta || 0;   // 앞뒤 기울기 (-180 ~ 180)
 
-                    // 화면 중앙을 기준으로 기울기를 마우스 위치로 변환
-                    // gamma: -30~30 정도를 사용 (너무 큰 값 제한)
-                    // beta: -30~30 정도를 사용
+                    // 화면 방향 감지 (Android와 iOS 모두 지원)
+                    const orientation = window.orientation || (window.screen && window.screen.orientation && window.screen.orientation.angle) || 0;
+
+                    // Android의 경우 화면 방향에 따라 값 조정
+                    let adjustedX, adjustedY;
+
+                    if (isAndroid) {
+                        // Android: portrait 모드 기준으로 조정
+                        // portrait (0): gamma = 좌우, beta = 앞뒤
+                        // landscape-primary (90): beta = 좌우, -gamma = 앞뒤
+                        // landscape-secondary (-90): -beta = 좌우, gamma = 앞뒤
+
+                        if (Math.abs(orientation) === 90) {
+                            // Landscape mode
+                            adjustedX = beta;
+                            adjustedY = -gamma;
+                        } else {
+                            // Portrait mode
+                            adjustedX = gamma;
+                            adjustedY = beta;
+                        }
+                    } else {
+                        // iOS: 기존 방식 유지
+                        adjustedX = gamma;
+                        adjustedY = beta;
+                    }
+
+                    // 범위 제한 및 매핑
                     const maxTilt = 30;
-                    gamma = Math.max(-maxTilt, Math.min(maxTilt, gamma));
-                    beta = Math.max(-maxTilt, Math.min(maxTilt, beta));
+                    adjustedX = Math.max(-maxTilt, Math.min(maxTilt, adjustedX));
+                    adjustedY = Math.max(-maxTilt, Math.min(maxTilt, adjustedY));
 
                     // 화면 크기에 맞춰 매핑
-                    tiltX = centerX + (gamma / maxTilt) * (width * 0.4);
-                    tiltY = centerY + (beta / maxTilt) * (height * 0.4);
+                    tiltX = centerX + (adjustedX / maxTilt) * (width * 0.4);
+                    tiltY = centerY + (adjustedY / maxTilt) * (height * 0.4);
 
-                    mouseX = tiltX;
-                    mouseY = tiltY;
+                    // 터치 컨트롤이 활성화되지 않았을 때만 기울기 센서 사용
+                    if (!touchActive) {
+                        mouseX = tiltX;
+                        mouseY = tiltY;
+                    }
                 }
             });
         }
@@ -404,16 +433,31 @@
             });
         }
 
-        // Request permission for iOS 13+
+        // Request permission for iOS 13+ and enable for Android
         function requestMotionPermission() {
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            if (isIOS && typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                // iOS 13+ 권한 요청
                 DeviceOrientationEvent.requestPermission()
                     .then(permissionState => {
                         if (permissionState === 'granted') {
-                            console.log('Motion permission granted');
+                            console.log('Motion permission granted (iOS)');
+                            orientationEnabled = true;
+                        } else {
+                            console.log('Motion permission denied (iOS)');
+                            orientationEnabled = false;
                         }
                     })
-                    .catch(console.error);
+                    .catch(err => {
+                        console.error('Motion permission error:', err);
+                        orientationEnabled = false;
+                    });
+            } else if (isAndroid) {
+                // Android는 권한 요청 없이 바로 활성화
+                console.log('Motion sensor enabled (Android)');
+                orientationEnabled = true;
+            } else {
+                // 기타 모바일 또는 데스크톱
+                orientationEnabled = isMobile;
             }
         }
 
