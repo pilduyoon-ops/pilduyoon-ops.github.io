@@ -290,8 +290,20 @@
         let speed = START_SPEED; // Actual current speed
 
         let turnSpeed = 0.08;
-        let snakeWidth = 14; 
+        let snakeWidth = 14;
         let growPending = 0;
+
+        // Scale factor for mobile (모바일에서 크기 조정)
+        let scaleFactor = 1.0;
+        function updateScaleFactor() {
+            if (canvas.width <= 768) {
+                scaleFactor = 0.65; // 모바일에서 65% 크기
+                snakeWidth = 14 * scaleFactor;
+            } else {
+                scaleFactor = 1.0; // 데스크톱에서 100% 크기
+                snakeWidth = 14;
+            }
+        }
 
         let isTurningLeft = false;
         let isTurningRight = false;
@@ -313,11 +325,12 @@
         let stageIdx = 0;
         let eatenCount = 0;
         let food = { x: 0, y: 0, emoji: "", size: 20 };
-        let isSick = false; 
+        let isSick = false;
 
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            updateScaleFactor(); // 화면 크기에 따라 스케일 업데이트
         }
         window.addEventListener('resize', resize);
         resize();
@@ -396,14 +409,14 @@
             if(st.name === 'caffeine') {
                 type = "caffeine";
                 emoji = junkList[Math.floor(Math.random()*junkList.length)];
-                size = Math.random() * 20 + 25; 
+                size = (Math.random() * 20 + 25) * scaleFactor; // 모바일에서 크기 조정
             } else if(st.name === 'rest') {
                 type = "rest";
                 emoji = "🛌";
-                size = 30;
+                size = 30 * scaleFactor; // 모바일에서 크기 조정
             } else {
                 emoji = st.emoji;
-                size = Math.random() * 10 + 20;
+                size = (Math.random() * 10 + 20) * scaleFactor; // 모바일에서 크기 조정
             }
 
             food.emoji = emoji;
@@ -559,7 +572,7 @@
             // Food
             ctx.font = `${food.size*2}px serif`;
             ctx.textAlign='center'; ctx.textBaseline='middle';
-            ctx.shadowBlur=10; ctx.shadowColor="rgba(255,255,255,0.5)";
+            ctx.shadowBlur=10 * scaleFactor; ctx.shadowColor="rgba(255,255,255,0.5)";
             ctx.fillText(food.emoji, food.x, food.y);
             ctx.shadowBlur=0;
 
@@ -591,8 +604,8 @@
             let ex2=h.x+Math.cos(angle+0.5)*eyeOff;
             let ey2=h.y+Math.sin(angle+0.5)*eyeOff;
             ctx.fillStyle="#fff";
-            ctx.beginPath(); ctx.arc(ex1,ey1,4,0,Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(ex2,ey2,4,0,Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(ex1,ey1,4 * scaleFactor,0,Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(ex2,ey2,4 * scaleFactor,0,Math.PI*2); ctx.fill();
 
             frameCount++;
         }
