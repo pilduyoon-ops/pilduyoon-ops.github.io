@@ -113,6 +113,41 @@
         }
 
         #sc-widget { display: none; }
+
+        /* Mobile Touch Controls */
+        #mobile-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .touch-area {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            pointer-events: auto;
+        }
+
+        #touch-left {
+            left: 0;
+            background: rgba(255, 100, 100, 0.1);
+        }
+
+        #touch-right {
+            right: 0;
+            background: rgba(100, 100, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            #mobile-controls {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -136,7 +171,7 @@
             <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 13px; text-align: left;">
                 <strong style="color: #4CAF50;">📱 Controls:</strong><br>
                 🖱️ Desktop: Move with mouse<br>
-                📱 Mobile: Tilt device to move
+                📱 Mobile: Tilt device OR tap left/right side of screen
             </div>
 
             <div style="font-size: 13px; color: #ccc; margin-bottom: 15px; text-align: left;">
@@ -182,6 +217,11 @@
 
     <canvas id="gameCanvas"></canvas>
 
+    <div id="mobile-controls">
+        <div id="touch-left" class="touch-area"></div>
+        <div id="touch-right" class="touch-area"></div>
+    </div>
+
     <script>
         const widget = SC.Widget(document.querySelector('#sc-widget'));
         const musicBtn = document.getElementById('music-btn');
@@ -220,18 +260,37 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         let width, height, centerX, centerY;
-        
+
         let gameState = "START";
         let score = 0;
         let frameCount = 0;
         let lastItemPickupTime = 0;
-        
+
         // Ben P. Miller
-        const SEG_RADIUS = 16;
-        const SEG_DIST = 18;
+        let SEG_RADIUS = 16;
+        let SEG_DIST = 18;
         let caterpillar = [];
         let mouseX = 0, mouseY = 0;
         let caterpillarSpeed = 0;
+
+        // Mobile support
+        let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        let tiltX = 0, tiltY = 0;
+        let touchActive = false;
+
+        // Scale factor for mobile (모바일에서 크기 조정)
+        let scaleFactor = 1.0;
+        function updateScaleFactor() {
+            if (width <= 768) {
+                scaleFactor = 0.65; // 모바일에서 65% 크기
+                SEG_RADIUS = 16 * scaleFactor;
+                SEG_DIST = 18 * scaleFactor;
+            } else {
+                scaleFactor = 1.0; // 데스크톱에서 100% 크기
+                SEG_RADIUS = 16;
+                SEG_DIST = 18;
+            }
+        }
 
         // Entities
         let enemies = [];
@@ -280,6 +339,7 @@
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             centerX = width/2; centerY = height/2;
+            updateScaleFactor(); // 화면 크기에 따라 스케일 업데이트
             if(gameState === "START") {
                 mouseX = centerX; mouseY = centerY;
                 initCaterpillar(centerX, centerY);
@@ -287,6 +347,75 @@
         }
         window.addEventListener('resize', resize);
         window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        // Mobile: Device Orientation (기울기 센서)
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event) {
+                if (gameState === 'PLAYING' && isMobile) {
+                    // gamma: 좌우 기울기 (-90 ~ 90)
+                    // beta: 앞뒤 기울기 (-180 ~ 180)
+                    let gamma = event.gamma || 0; // 좌우
+                    let beta = event.beta || 0;   // 앞뒤
+
+                    // 화면 중앙을 기준으로 기울기를 마우스 위치로 변환
+                    // gamma: -30~30 정도를 사용 (너무 큰 값 제한)
+                    // beta: -30~30 정도를 사용
+                    const maxTilt = 30;
+                    gamma = Math.max(-maxTilt, Math.min(maxTilt, gamma));
+                    beta = Math.max(-maxTilt, Math.min(maxTilt, beta));
+
+                    // 화면 크기에 맞춰 매핑
+                    tiltX = centerX + (gamma / maxTilt) * (width * 0.4);
+                    tiltY = centerY + (beta / maxTilt) * (height * 0.4);
+
+                    mouseX = tiltX;
+                    mouseY = tiltY;
+                }
+            });
+        }
+
+        // Mobile: Touch Controls
+        const touchLeft = document.getElementById('touch-left');
+        const touchRight = document.getElementById('touch-right');
+
+        if (touchLeft && touchRight) {
+            touchLeft.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (gameState === 'PLAYING') {
+                    mouseX = width * 0.25;
+                    touchActive = true;
+                }
+            });
+
+            touchRight.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (gameState === 'PLAYING') {
+                    mouseX = width * 0.75;
+                    touchActive = true;
+                }
+            });
+
+            touchLeft.addEventListener('touchend', () => {
+                touchActive = false;
+            });
+
+            touchRight.addEventListener('touchend', () => {
+                touchActive = false;
+            });
+        }
+
+        // Request permission for iOS 13+
+        function requestMotionPermission() {
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            console.log('Motion permission granted');
+                        }
+                    })
+                    .catch(console.error);
+            }
+        }
 
         function initCaterpillar(x, y) {
             caterpillar = [];
@@ -311,6 +440,11 @@
             // 게임 시작 시 초기 아이템 2개 스폰
             spawnInitialItems();
 
+            // Request motion permission for iOS devices
+            if (isMobile) {
+                requestMotionPermission();
+            }
+
             if (!isPlaying) {
                 widget.play();
                 isPlaying = true;
@@ -326,7 +460,7 @@
                 y: centerY + (Math.random()-0.5)*200,
                 type: 'SHOOTER',
                 data: ITEMS.SHOOTER,
-                radius: 28,
+                radius: 28 * scaleFactor, // 모바일에서 크기 조정
                 pulse: 0,
                 life: ITEMS.SHOOTER.life,
                 maxLife: ITEMS.SHOOTER.life
@@ -421,8 +555,8 @@
                     enemies.push({
                         x: sx, y: sy,
                         vx: Math.cos(moveAngle), vy: Math.sin(moveAngle),
-                        speed: ((1.5 + Math.random()*1.5) * 0.8), 
-                        radius: 25 + Math.random()*15, 
+                        speed: ((1.5 + Math.random()*1.5) * 0.8),
+                        radius: (25 + Math.random()*15) * scaleFactor, // 모바일에서 크기 조정
                         typeData: typeData,
                         rotation: Math.random() * Math.PI,
                         spinSpeed: (Math.random()-0.5) * 0.05
@@ -449,7 +583,8 @@
                     y: 50 + Math.random()*(height-100),
                     type: selectedKey,
                     data: ITEMS[selectedKey],
-                    radius: 28, pulse: 0,
+                    radius: 28 * scaleFactor, // 모바일에서 크기 조정
+                    pulse: 0,
                     life: ITEMS[selectedKey].life,
                     maxLife: ITEMS[selectedKey].life
                 });
@@ -501,7 +636,8 @@
                 type: 'VINYL',
                 x: head.x, y: head.y,
                 vx: Math.cos(angle)*3.33, vy: Math.sin(angle)*3.33,
-                radius: 12, life: 360, color: '#ff00ff'
+                radius: 12 * scaleFactor, // 모바일에서 크기 조정
+                life: 360, color: '#ff00ff'
             });
         }
 
@@ -514,7 +650,8 @@
                 type: 'BALL',
                 x: head.x, y: head.y,
                 vx: Math.cos(angle)*ballSpeed, vy: Math.sin(angle)*ballSpeed,
-                radius: 117, life: 600, color: '#00ffff', rotation: 0 // 크기 2/3로 축소 (175 -> 117)
+                radius: 117 * scaleFactor, // 모바일에서 크기 조정 (기존 175 -> 117, 모바일에서 추가 축소)
+                life: 600, color: '#00ffff', rotation: 0
             });
         }
 
@@ -542,7 +679,7 @@
                 x: head.x, y: head.y,
                 vx: 0, vy: -speed, // 위로 수직 이동
                 width: width / 7, // 수평 길이
-                height: 60, // 수직 높이
+                height: 60 * scaleFactor, // 수직 높이 (모바일에서 크기 조정)
                 angle: 0, // 항상 수평 (0도)
                 life: 800, color: '#ffffff'
             });
@@ -559,8 +696,8 @@
                 vx: Math.cos(angle) * speed,
                 vy: Math.sin(angle) * speed,
                 angle: angle,
-                width: 4, // 광선 두께
-                length: 60, // 광선 길이
+                width: 4 * scaleFactor, // 광선 두께 (모바일에서 크기 조정)
+                length: 60 * scaleFactor, // 광선 길이 (모바일에서 크기 조정)
                 life: 120, // 2초 (120프레임)
                 color: '#ffff00'
             });
@@ -572,7 +709,7 @@
                 particles.push({
                     x: x, y: y,
                     vx: (Math.random()-0.5)*10, vy: (Math.random()-0.5)*10,
-                    life: 1.0, color: color, size: Math.random()*5+2
+                    life: 1.0, color: color, size: (Math.random()*5+2) * scaleFactor
                 });
             }
         }
@@ -826,7 +963,7 @@
                 ctx.closePath(); ctx.fill();
                 if (useEffects) ctx.shadowBlur = 0;
                 ctx.rotate(-e.rotation);
-                ctx.fillStyle = '#fff'; ctx.font = "20px Segoe UI Emoji"; 
+                ctx.fillStyle = '#fff'; ctx.font = `${20 * scaleFactor}px Segoe UI Emoji`;
                 ctx.textAlign = "center"; ctx.textBaseline = "middle";
                 ctx.fillText(e.typeData.icon, 0, 2);
                 ctx.restore();
@@ -835,12 +972,12 @@
 
                 if (effectTimers.orbit > 0) {
                     const head = caterpillar[0];
-                    const orbitR = 80; 
+                    const orbitR = 80 * scaleFactor;
                     orbitNotes.forEach(note => {
                         const nx = head.x + Math.cos(note.angle + frameCount*0.1) * orbitR;
                         const ny = head.y + Math.sin(note.angle + frameCount*0.1) * orbitR;
-                        if (Math.hypot(nx - e.x, ny - e.y) < 25 + e.radius) {
-                            isDead = true; 
+                        if (Math.hypot(nx - e.x, ny - e.y) < 25 * scaleFactor + e.radius) {
+                            isDead = true;
                             createExplosion(e.x, e.y, '#55ff55', 10);
                         }
                     });
@@ -849,8 +986,8 @@
                 if (!isDead && effectTimers.barrier > 0) {
                     const head = caterpillar[0];
                     // 포스필드 크기 증가: 70 -> 120 (전체 커버)
-                    if (Math.hypot(head.x - e.x, head.y - e.y) < 120 + e.radius) {
-                        isDead = true; 
+                    if (Math.hypot(head.x - e.x, head.y - e.y) < 120 * scaleFactor + e.radius) {
+                        isDead = true;
                         createExplosion(e.x, e.y, '#00ffaa', 10);
                     }
                 }
@@ -881,7 +1018,7 @@
                 ctx.beginPath(); ctx.arc(0, 0, item.radius, 0, Math.PI*2); ctx.fill();
                 ctx.shadowBlur = 0;
                 ctx.fillStyle = '#000';
-                ctx.font = "24px Segoe UI Emoji"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+                ctx.font = `${24 * scaleFactor}px Segoe UI Emoji`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
                 ctx.fillText(item.data.icon, 0, 2);
                 ctx.restore();
 
@@ -899,14 +1036,14 @@
                 ctx.translate(head.x, head.y);
                 ctx.rotate(frameCount * 0.02);
                 ctx.strokeStyle = `rgba(0, 255, 170, ${0.3 + Math.sin(frameCount*0.1)*0.2})`;
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 4 * scaleFactor;
                 ctx.shadowBlur = 20; ctx.shadowColor = '#00ffaa';
-                
+
                 // 보호막 크기 증가 (110)
                 ctx.beginPath();
                 for(let i=0; i<6; i++) {
                     const angle = i * Math.PI/3;
-                    const r = 110; 
+                    const r = 110 * scaleFactor;
                     ctx.lineTo(Math.cos(angle)*r, Math.sin(angle)*r);
                 }
                 ctx.closePath(); ctx.stroke();
@@ -916,8 +1053,8 @@
 
             if (effectTimers.orbit > 0) {
                 const head = caterpillar[0];
-                const orbitR = 80;
-                ctx.font = "24px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+                const orbitR = 80 * scaleFactor;
+                ctx.font = `${24 * scaleFactor}px Arial`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
                 orbitNotes.forEach(note => {
                     const ang = note.angle + frameCount*0.1;
                     const nx = head.x + Math.cos(ang) * orbitR;
