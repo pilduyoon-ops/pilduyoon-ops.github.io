@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -293,7 +293,7 @@
             <nav class="breadcrumbs" aria-label="Breadcrumb">
                 <a href="index.html">Home</a>
                 <i class="fas fa-chevron-right" style="font-size: 0.7rem;" aria-hidden="true"></i>
-                <a href="index.html#marketing-lab">Lab</a>
+                <a href="index.html#engineering-lab">Engineering Lab</a>
                 <i class="fas fa-chevron-right" style="font-size: 0.7rem;" aria-hidden="true"></i>
                 <span style="color: var(--text-main)" aria-current="page">Bellows Mechanics</span>
             </nav>
@@ -303,8 +303,8 @@
     <section class="hero">
         <h1>Advanced Bellows Engineering</h1>
         <p>
-            Edge Welded Bellows의 역학적 원리 연구와 <br>
-            자동화된 사양 설계를 위한 인터랙티브 툴 개발 프로젝트
+            An interactive tool project exploring the mechanical principles <br>
+            of edge-welded bellows and automating their specification design
         </p>
     </section>
 
@@ -318,7 +318,7 @@
                 </div>
                 <h3>01. Fatigue Life Prediction</h3>
                 <p style="color:var(--text-muted); font-size:0.9rem;">
-                    Bellows 설계의 핵심은 피로 수명 예측입니다. S-N Curve(Stress-Life)와 Buhler’s Curve를 통해 Stroke 비율에 따른 기대 수명(Cycle Life)을 계산합니다.
+                    The heart of bellows design is fatigue-life prediction. Using S-N (Stress-Life) and Buhler’s curves, we calculate the expected cycle life as a function of the stroke ratio.
                 </p>
             </div>
             
@@ -329,7 +329,7 @@
                 </div>
                 <h3>02. Hooke's Law & Stiffness</h3>
                 <p style="color:var(--text-muted); font-size:0.9rem;">
-                    Bellows는 정밀 스프링으로 작동합니다. Plate 두께(t)와 Span(w)의 비율이 Spring Rate에 미치는 영향을 분석하여 시스템의 부하를 최적화합니다.
+                    A bellows behaves as a precision spring. We analyze how the ratio of plate thickness (t) to span (w) affects the spring rate, optimizing the load on the overall system.
                 </p>
             </div>
 
@@ -340,7 +340,7 @@
                 </div>
                 <h3>03. High Alloy Selection</h3>
                 <p style="color:var(--text-muted); font-size:0.9rem;">
-                    AM350, Inconel 625/718, Titanium 등 극한 환경(고온, 부식)을 견디는 특수 합금의 Tensile Strength와 Young's Modulus 특성 연구.
+                    A study of the tensile strength and Young's modulus of specialty alloys — such as AM350, Inconel 625/718, and Titanium — that withstand extreme environments of high heat and corrosion.
                 </p>
             </div>
         </div>
@@ -349,7 +349,7 @@
     <section class="configurator-wrapper">
         <div style="text-align: center; margin-bottom: 3rem;">
             <h2 style="font-weight: 300; margin-bottom: 1rem;">Interactive <span style="font-weight:700; color:var(--accent);">Design Configurator</span></h2>
-            <p style="color:var(--text-muted);">아래 툴을 사용하여 가상의 Bellows 사양을 설계해보세요. <br>입력 필드를 선택하면 우측 그래픽에 해당 부위가 시각화됩니다.</p>
+            <p style="color:var(--text-muted);">Use the tool below to design a virtual bellows specification. <br>Selecting an input field highlights the corresponding part in the graphic on the right.</p>
         </div>
 
         <div class="tool-container">
@@ -362,20 +362,20 @@
 
                 <form id="bellowsForm">
                     <div class="form-step active" id="step-1">
-                        <h3 style="margin-bottom:1.5rem;">Step 1. 운용 환경 (Environment)</h3>
+                        <h3 style="margin-bottom:1.5rem;">Step 1. Operating Environment</h3>
                         <div class="input-group">
-                            <label>압력 차이 (Pressure Differential)</label>
+                            <label>Pressure Differential</label>
                             <select onfocus="highlightDim('pressure')" onblur="resetDim()">
                                 <option>High Vacuum (Internal)</option>
                                 <option>Positive Pressure (External)</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>운용 온도 (Temperature)</label>
+                            <label>Operating Temperature</label>
                             <input type="text" placeholder="e.g. 250°C" onfocus="highlightDim('temp')" onblur="resetDim()">
                         </div>
                         <div class="input-group">
-                            <label>요구 수명 (Target Cycles)</label>
+                            <label>Target Cycles</label>
                             <select>
                                 <option>Standard (100k cycles)</option>
                                 <option>High Cycle (1M cycles)</option>
@@ -389,17 +389,17 @@
                     </div>
 
                     <div class="form-step" id="step-2">
-                        <h3 style="margin-bottom:1.5rem;">Step 2. 치수 설정 (Dimensions)</h3>
+                        <h3 style="margin-bottom:1.5rem;">Step 2. Dimensions</h3>
                         <div class="input-group">
-                            <label>내경 (Inner Diameter - ID)</label>
+                            <label>Inner Diameter (ID)</label>
                             <input type="number" placeholder="mm" onfocus="highlightDim('id')" onblur="resetDim()">
                         </div>
                         <div class="input-group">
-                            <label>외경 (Outer Diameter - OD)</label>
+                            <label>Outer Diameter (OD)</label>
                             <input type="number" placeholder="mm" onfocus="highlightDim('od')" onblur="resetDim()">
                         </div>
                         <div class="input-group">
-                            <label>길이 (Length)</label>
+                            <label>Length</label>
                             <input type="number" placeholder="mm" onfocus="highlightDim('length')" onblur="resetDim()">
                         </div>
                         <div class="btn-row">
@@ -409,9 +409,9 @@
                     </div>
 
                     <div class="form-step" id="step-3">
-                        <h3 style="margin-bottom:1.5rem;">Step 3. 연결 및 검토 (Finalize)</h3>
+                        <h3 style="margin-bottom:1.5rem;">Step 3. Connections &amp; Review</h3>
                         <div class="input-group">
-                            <label>상부 플랜지 (Top Flange)</label>
+                            <label>Top Flange</label>
                             <select onfocus="highlightDim('flange')" onblur="resetDim()">
                                 <option>CF Flange</option>
                                 <option>KF Flange</option>
@@ -419,7 +419,7 @@
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>재질 (Material)</label>
+                            <label>Material</label>
                             <select>
                                 <option>316L Stainless Steel</option>
                                 <option>AM350</option>
