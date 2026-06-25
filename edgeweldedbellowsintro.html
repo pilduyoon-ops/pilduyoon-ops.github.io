@@ -364,19 +364,19 @@
                     <div class="form-step active" id="step-1">
                         <h3 style="margin-bottom:1.5rem;">Step 1. Operating Environment</h3>
                         <div class="input-group">
-                            <label>Pressure Differential</label>
-                            <select onfocus="highlightDim('pressure')" onblur="resetDim()">
+                            <label for="cfg-pressure">Pressure Differential</label>
+                            <select id="cfg-pressure" onfocus="highlightDim('pressure')" onblur="resetDim()">
                                 <option>High Vacuum (Internal)</option>
                                 <option>Positive Pressure (External)</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>Operating Temperature</label>
-                            <input type="text" placeholder="e.g. 250°C" onfocus="highlightDim('temp')" onblur="resetDim()">
+                            <label for="cfg-temp">Operating Temperature</label>
+                            <input id="cfg-temp" type="text" placeholder="e.g. 250°C" onfocus="highlightDim('temp')" onblur="resetDim()">
                         </div>
                         <div class="input-group">
-                            <label>Target Cycles</label>
-                            <select>
+                            <label for="cfg-cycles">Target Cycles</label>
+                            <select id="cfg-cycles">
                                 <option>Standard (100k cycles)</option>
                                 <option>High Cycle (1M cycles)</option>
                                 <option>Extreme (5M+ cycles)</option>
@@ -391,16 +391,16 @@
                     <div class="form-step" id="step-2">
                         <h3 style="margin-bottom:1.5rem;">Step 2. Dimensions</h3>
                         <div class="input-group">
-                            <label>Inner Diameter (ID)</label>
-                            <input type="number" placeholder="mm" onfocus="highlightDim('id')" onblur="resetDim()">
+                            <label for="cfg-id">Inner Diameter (ID)</label>
+                            <input id="cfg-id" type="number" placeholder="mm" onfocus="highlightDim('id')" onblur="resetDim()">
                         </div>
                         <div class="input-group">
-                            <label>Outer Diameter (OD)</label>
-                            <input type="number" placeholder="mm" onfocus="highlightDim('od')" onblur="resetDim()">
+                            <label for="cfg-od">Outer Diameter (OD)</label>
+                            <input id="cfg-od" type="number" placeholder="mm" onfocus="highlightDim('od')" onblur="resetDim()">
                         </div>
                         <div class="input-group">
-                            <label>Length</label>
-                            <input type="number" placeholder="mm" onfocus="highlightDim('length')" onblur="resetDim()">
+                            <label for="cfg-length">Length</label>
+                            <input id="cfg-length" type="number" placeholder="mm" onfocus="highlightDim('length')" onblur="resetDim()">
                         </div>
                         <div class="btn-row">
                             <button type="button" class="btn btn-prev" onclick="nextStep(1)">Back</button>
@@ -411,16 +411,16 @@
                     <div class="form-step" id="step-3">
                         <h3 style="margin-bottom:1.5rem;">Step 3. Connections &amp; Review</h3>
                         <div class="input-group">
-                            <label>Top Flange</label>
-                            <select onfocus="highlightDim('flange')" onblur="resetDim()">
+                            <label for="cfg-flange">Top Flange</label>
+                            <select id="cfg-flange" onfocus="highlightDim('flange')" onblur="resetDim()">
                                 <option>CF Flange</option>
                                 <option>KF Flange</option>
                                 <option>Weld End</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>Material</label>
-                            <select>
+                            <label for="cfg-material">Material</label>
+                            <select id="cfg-material">
                                 <option>316L Stainless Steel</option>
                                 <option>AM350</option>
                                 <option>Inconel 718</option>
