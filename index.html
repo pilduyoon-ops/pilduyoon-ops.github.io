@@ -2,24 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Stephen Yoon - Sales Manager, Content Designer, and Musician based in Seoul. Singing His praise and designing innovation.">
-    
+    <meta name="theme-color" content="#121212">
+    <link rel="canonical" href="https://stephenyoon.com/">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <link rel="preconnect" href="https://www.youtube.com">
+    <link rel="preconnect" href="https://w.soundcloud.com">
+    <link rel="dns-prefetch" href="https://i.ytimg.com">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Stephen Yoon">
-    <meta property="og:title" content="Stephen Yoon - Music & Life">
-    <meta property="og:description" content="Singing His Praise, Designing Innovation. Meet Stephen Yoon.">
+    <meta property="og:title" content="Stephen Yoon — Music & Life">
+    <meta property="og:description" content="Singing His Praise, Designing Innovation. Meet Stephen Yoon — musician, content designer, and sales manager in Seoul.">
     <meta property="og:image" content="https://stephenyoon.com/stephenyoon.jpeg">
-    <meta property="og:url" content="https://stephenyoon.com">
-    
+    <meta property="og:image:alt" content="Portrait of Stephen Yoon">
+    <meta property="og:url" content="https://stephenyoon.com/">
+
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Stephen Yoon">
-    <meta name="twitter:description" content="Singing His Praise, Designing Innovation.">
+    <meta name="twitter:title" content="Stephen Yoon — Music & Life">
+    <meta name="twitter:description" content="Singing His Praise, Designing Innovation. Meet Stephen Yoon.">
     <meta name="twitter:image" content="https://stephenyoon.com/stephenyoon.jpeg">
-    
-    <title>Stephen Yoon - My Life</title>
+
+    <title>Stephen Yoon — Music &amp; Life | Musician &amp; Content Designer in Seoul</title>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Stephen Pildu Yoon",
+        "alternateName": "Pildu Yoon",
+        "url": "https://stephenyoon.com/",
+        "image": "https://stephenyoon.com/stephenyoon.jpeg",
+        "jobTitle": ["Sales Manager", "Content Designer", "Musician"],
+        "worksFor": { "@type": "Organization", "name": "Korea Seal Master (KSM)" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Seoul", "addressCountry": "KR" },
+        "sameAs": [
+            "https://soundcloud.com/pildu-yoon",
+            "https://instagram.com/stephenyoon4",
+            "https://www.linkedin.com/in/stephen-pildu-y-53299687/"
+        ]
+    }
+    </script>
     <style>
         /* === Basic Settings === */
         :root {
@@ -368,6 +395,11 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
+            padding: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            color: inherit;
+            font: inherit;
         }
 
         .bgm-control:hover {
@@ -446,6 +478,28 @@
             
             .bgm-control { bottom: 20px; right: 20px; width: 45px; height: 45px; }
         }
+
+        /* === Keyboard focus visibility (a11y) === */
+        a:focus-visible,
+        button:focus-visible,
+        .bgm-control:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 3px solid var(--accent-color);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        /* === Reduced motion support === */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            body { scroll-snap-type: none; }
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+            .bgm-playing { animation: none; }
+        }
     </style>
 </head>
 <body>
@@ -483,7 +537,7 @@
         <div class="music-grid">
             <div class="music-card">
                 <h3>Man Does Not Live on Bread Alone</h3>
- <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2231762684&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/pildu-yoon" title="Stephen Yoon" target="_blank" style="color: #cccccc; text-decoration: none;">Stephen Yoon</a> · <a href="https://soundcloud.com/pildu-yoon/251213-man-does-not-live-on" title="251213 Man Does Not Live on Bread Alone v3" target="_blank" style="color: #cccccc; text-decoration: none;">251213 Man Does Not Live on Bread Alone v3</a></div>
+ <iframe width="100%" height="300" scrolling="no" frameborder="no" loading="lazy" title="Man Does Not Live on Bread Alone — SoundCloud player" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2231762684&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/pildu-yoon" title="Stephen Yoon" target="_blank" style="color: #cccccc; text-decoration: none;">Stephen Yoon</a> · <a href="https://soundcloud.com/pildu-yoon/251213-man-does-not-live-on" title="251213 Man Does Not Live on Bread Alone v3" target="_blank" style="color: #cccccc; text-decoration: none;">251213 Man Does Not Live on Bread Alone v3</a></div>
                 <p class="music-description">
                     This song is based on Deuteronomy 8:2~3, reminding us that true life comes from God's word, not just physical sustenance.<br><br>
                 </p>
@@ -491,7 +545,7 @@
 
             <div class="music-card">
                 <h3>Though the Fig Tree Doesn't Bloom</h3>
-                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2227821362&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+                <iframe width="100%" height="300" scrolling="no" frameborder="no" loading="lazy" title="Though the Fig Tree Doesn't Bloom — SoundCloud player" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2227821362&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
                 <p class="music-description">
                     I recently memorized Habakkuk 3:17–19. It gave me strength during my hardships because it reminded me that God is my salvation. Even in desperate situations, don't worry about anything—trust in the Lord! He will provide a way for you.<br><br>
                 </p>
@@ -499,10 +553,9 @@
 
             <div class="music-card">
                 <h3>I'm Boarding This Plane</h3>
-                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2235603122&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+                <iframe width="100%" height="300" scrolling="no" frameborder="no" loading="lazy" title="I'm Boarding This Plane — SoundCloud player" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2235603122&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
                 <p class="music-description">
-                    <br><br>
-                    <em>R&B music I made in December 2025</em>
+                    A smooth R&amp;B track I produced in December 2025 — a heartfelt song about stepping out in faith and trusting where the journey leads.
                 </p>
             </div>
         </div>
@@ -519,7 +572,7 @@
             <a href="creativeflow.html" class="music-card-link">
                 <div class="music-card">
                     <h3>Ben P. Miller's Creative Flow Game</h3>
-                    <img src="B.P.M.jpg" alt="The Music Caterpillar" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
+                    <img src="B.P.M.jpg" alt="Ben P. Miller's Creative Flow game cover" width="1200" height="655" loading="lazy" decoding="async" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px;">
                     <p class="music-description">
                        Classic Snake meets rhythm! Guide Ben P. Miller, the music-loving caterpillar, to collect musical items that make him grow longer. Grab caffeine boosts to speed up by 50% and maximize your flow. Balance growth and speed in this creative twist on a timeless game.
                     </p>
@@ -528,7 +581,7 @@
             <a href="Bullet.html" class="music-card-link">
                 <div class="music-card">
                     <h3>Ben P. Miller's Symphony of Defense Game</h3>
-                    <img src="BPM_Symphony_of_Defense.jpg" alt="Symphony of Defense" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
+                    <img src="BPM_Symphony_of_Defense.jpg" alt="Ben P. Miller's Symphony of Defense game cover" width="1024" height="559" loading="lazy" decoding="async" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px;">
                     <p class="music-description">
                         Defend your creative focus from jagged distractions! Collect powerful musical items and fight back against waves of enemies. Grow stronger with each power-up while avoiding deadly obstacles. Survive as long as you can and maximize your FLOW score in this action-packed defense game.
                     </p>
@@ -544,7 +597,7 @@
         
         <div class="about-container">
             <div class="about-image">
-                <img src="stephenyoon.jpeg" alt="Stephen Yoon">
+                <img src="stephenyoon.jpeg" alt="Stephen Yoon" width="900" height="1419" loading="lazy" decoding="async">
             </div>
             <div class="about-text">
                 <h3 class="about-headline">Singing His Praise, Designing Innovation</h3>
@@ -577,11 +630,11 @@
         </div>
 
         <div style="margin-top: 40px; text-align: center;">
-            <img src="seoul1.jpg" alt="Stephen Pildu Yoon in Seoul" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+            <img src="seoul1.jpg" alt="Stephen Pildu Yoon in Seoul" width="1600" height="901" loading="lazy" decoding="async" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
         </div>
 
         <div style="margin-top: 40px; text-align: center;">
-            <img src="seoul2.jpg" alt="Stephen Yoon in Seoul" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+            <img src="seoul2.jpg" alt="Stephen Yoon in Seoul" width="1600" height="901" loading="lazy" decoding="async" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
         </div>
     </section>
 
@@ -616,57 +669,44 @@
         </div>
     </section>
 
-    <footer style="text-align: center; padding: 40px; color: #666; font-size: 0.8rem;">
-        <p>© 2025 Stephen Pildu Yoon. All rights reserved.</p>
+    <footer style="text-align: center; padding: 40px; color: #9a9a9a; font-size: 0.8rem;">
+        <p>© <span id="year">2026</span> Stephen Pildu Yoon. All rights reserved.</p>
     </footer>
 
-    <div id="bgm-toggle" class="bgm-control" title="Play Background Music">
-        <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="icon-pause" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    </div>
+    <button id="bgm-toggle" type="button" class="bgm-control" aria-label="Play background music" aria-pressed="false" title="Play background music">
+        <svg id="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="icon-pause" viewBox="0 0 24 24" aria-hidden="true" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
 
-    <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1595020512&auto_play=true&show_comments=false&color=00ff00" width="1" height="1" frameborder="0" allow="autoplay" style="position:absolute; opacity:0; pointer-events:none;"></iframe>
+    <iframe id="sc-widget" title="Background music player" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1595020512&auto_play=false&show_comments=false&color=00ff00" width="1" height="1" frameborder="0" allow="autoplay" style="position:absolute; opacity:0; pointer-events:none;"></iframe>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script src="https://www.youtube.com/iframe_api" defer></script>
+    <script src="https://w.soundcloud.com/player/api.js" defer></script>
     <script>
-        // --- 1. YouTube Background Settings ---
-        let player;
-        let playerReady = false;
-        let playAttempts = 0;
-        const START_TIME = 15;
-        const MAX_PLAY_ATTEMPTS = 5;
+        // Auto-updating copyright year
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-        // YouTube API가 로드되기 전에 미리 준비
-        window.YT = window.YT || {};
-        window.YT.ready = window.YT.ready || function(callback) {
-            if (window.YT.Player) {
-                callback();
-            } else {
-                setTimeout(function() {
-                    window.YT.ready(callback);
-                }, 100);
-            }
-        };
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // --- 1. YouTube Background Video ---
+        var player;
+        var playerReady = false;
+        var playSucceeded = false;        // true once the video actually plays
+        var playAttempts = 0;
+        var recoverAttempts = 0;          // bounded recovery for paused/buffering
+        var START_TIME = 15;
+        var MAX_PLAY_ATTEMPTS = 5;
+        var MAX_RECOVER_ATTEMPTS = 4;
 
         function onYouTubeIframeAPIReady() {
-            console.log('YouTube API Ready');
             player = new YT.Player('youtube-player', {
                 height: '100%',
                 width: '100%',
                 videoId: 'Y9zSf1NgMKs',
                 playerVars: {
-                    'autoplay': 1,
-                    'mute': 1,
-                    'controls': 0,
-                    'modestbranding': 1,
-                    'fs': 0,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'disablekb': 1,
-                    'iv_load_policy': 3,
-                    'playsinline': 1,
-                    'enablejsapi': 1,
+                    'autoplay': 1, 'mute': 1, 'controls': 0, 'modestbranding': 1,
+                    'fs': 0, 'rel': 0, 'showinfo': 0, 'disablekb': 1,
+                    'iv_load_policy': 3, 'playsinline': 1, 'enablejsapi': 1,
                     'origin': window.location.origin
                 },
                 events: {
@@ -678,12 +718,11 @@
         }
 
         function onPlayerReady(event) {
-            console.log('Player Ready');
             playerReady = true;
             event.target.mute();
             event.target.setVolume(0);
-
-            // 즉시 재생 시도
+            // Respect users who prefer reduced motion: leave the first frame as a still.
+            if (prefersReducedMotion) return;
             setTimeout(function() {
                 event.target.seekTo(START_TIME, true);
                 attemptPlay(event.target);
@@ -691,155 +730,115 @@
         }
 
         function attemptPlay(target) {
-            if (!target || playAttempts >= MAX_PLAY_ATTEMPTS) {
-                console.log('Max play attempts reached or no target');
-                return;
-            }
-
+            if (!target || playSucceeded || playAttempts >= MAX_PLAY_ATTEMPTS) return;
             playAttempts++;
-            console.log('Attempt to play: ' + playAttempts);
-
             try {
                 target.playVideo();
-
-                // 상태 확인 및 재시도
                 setTimeout(function() {
                     if (player && playerReady) {
                         var state = player.getPlayerState();
-                        console.log('Player state after attempt:', state);
-
-                        if (state !== YT.PlayerState.PLAYING && state !== YT.PlayerState.BUFFERING) {
-                            console.log('Not playing, retrying...');
-                            attemptPlay(player);
+                        if (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING) {
+                            playSucceeded = true;
                         } else {
-                            console.log('Video playing successfully');
-                            playAttempts = 0; // 성공시 리셋
+                            attemptPlay(player);
                         }
                     }
                 }, 1500);
             } catch (e) {
-                console.log('Autoplay blocked:', e);
                 setupUserInteractionListeners();
             }
         }
 
         function setupUserInteractionListeners() {
-            // 여러 이벤트에 리스너 추가
-            var events = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
-
+            var events = ['click', 'touchstart', 'keydown'];
             events.forEach(function(eventType) {
                 document.addEventListener(eventType, function startVideo() {
-                    if (player && playerReady) {
-                        console.log('User interaction detected:', eventType);
-                        player.playVideo();
-
-                        // 한번만 실행되도록 모든 이벤트 제거
-                        events.forEach(function(et) {
-                            document.removeEventListener(et, startVideo);
-                        });
-                    }
+                    if (player && playerReady && !prefersReducedMotion) player.playVideo();
+                    events.forEach(function(et) { document.removeEventListener(et, startVideo); });
                 }, { once: true, passive: true });
             });
         }
 
         function onPlayerStateChange(event) {
-            console.log('Player state changed:', event.data);
+            if (event.data === YT.PlayerState.PLAYING) { playSucceeded = true; recoverAttempts = 0; }
 
-            // 영상 끝남
             if (event.data === YT.PlayerState.ENDED) {
                 player.seekTo(START_TIME, true);
                 player.playVideo();
             }
 
-            // 일시정지됨 - 다시 재생
-            if (event.data === YT.PlayerState.PAUSED) {
+            // Paused/buffering: try to recover a bounded number of times, then give up
+            // (avoids a permanent retry timer draining battery when autoplay is blocked).
+            if (event.data === YT.PlayerState.PAUSED && recoverAttempts < MAX_RECOVER_ATTEMPTS && !prefersReducedMotion) {
+                recoverAttempts++;
                 setTimeout(function() {
-                    if (player.getPlayerState() === YT.PlayerState.PAUSED) {
-                        console.log('Video paused, restarting...');
-                        player.playVideo();
-                    }
+                    if (player.getPlayerState() === YT.PlayerState.PAUSED) player.playVideo();
                 }, 500);
             }
 
-            // 버퍼링 중
-            if (event.data === YT.PlayerState.BUFFERING) {
-                setTimeout(function() {
-                    if (player.getPlayerState() === YT.PlayerState.BUFFERING) {
-                        console.log('Still buffering, forcing play...');
-                        player.playVideo();
-                    }
-                }, 3000);
-            }
-
-            // 준비되지 않음
-            if (event.data === YT.PlayerState.CUED) {
-                setTimeout(function() {
-                    player.playVideo();
-                }, 500);
+            if (event.data === YT.PlayerState.CUED && !prefersReducedMotion) {
+                setTimeout(function() { player.playVideo(); }, 500);
             }
         }
 
         function onPlayerError(event) {
-            console.error('YouTube Player Error:', event.data);
-            // 에러 발생시 재시도
             setTimeout(function() {
                 if (player) {
-                    player.loadVideoById({
-                        videoId: 'Y9zSf1NgMKs',
-                        startSeconds: START_TIME
-                    });
+                    player.loadVideoById({ videoId: 'Y9zSf1NgMKs', startSeconds: START_TIME });
                 }
             }, 3000);
         }
 
-        // 페이지 로드 완료 후 추가 재생 시도
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                if (player && playerReady && player.getPlayerState() !== YT.PlayerState.PLAYING) {
-                    console.log('Page loaded, checking video status...');
-                    player.playVideo();
-                }
-            }, 2000);
-        });
+        // --- 2. Background Music (SoundCloud) ---
+        // Browsers block audio autoplay without a gesture, so we start music on the
+        // visitor's first interaction (once) and via the explicit toggle button.
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof SC === 'undefined') return;
+            var widget = SC.Widget(document.getElementById('sc-widget'));
+            var bgmBtn = document.getElementById('bgm-toggle');
+            var iconPlay = document.getElementById('icon-play');
+            var iconPause = document.getElementById('icon-pause');
+            var isPlaying = false;
+            var widgetReady = false;
+            var userInteracted = false;
+            var wantsPlay = false;        // we intend BGM to be on (queued until widget is ready)
 
-        // --- 2. BGM Settings (SoundCloud) ---
-        var widgetIframe = document.getElementById('sc-widget');
-        var widget = SC.Widget(widgetIframe);
-        var bgmBtn = document.getElementById('bgm-toggle');
-        var iconPlay = document.getElementById('icon-play');
-        var iconPause = document.getElementById('icon-pause');
-        var isPlaying = false;
-
-        widget.bind(SC.Widget.Events.READY, function() {
-            widget.setVolume(30); 
-            widget.play(); 
-        });
-
-        widget.bind(SC.Widget.Events.PLAY, function() {
-            isPlaying = true;
-            updateButton();
-        });
-
-        widget.bind(SC.Widget.Events.PAUSE, function() {
-            isPlaying = false;
-            updateButton();
-        });
-
-        bgmBtn.addEventListener('click', function() {
-            widget.toggle();
-        });
-
-        function updateButton() {
-            if (isPlaying) {
-                iconPlay.style.display = 'none';
-                iconPause.style.display = 'block';
-                bgmBtn.classList.add('bgm-playing');
-            } else {
-                iconPlay.style.display = 'block';
-                iconPause.style.display = 'none';
-                bgmBtn.classList.remove('bgm-playing');
+            function updateButton() {
+                iconPlay.style.display = isPlaying ? 'none' : 'block';
+                iconPause.style.display = isPlaying ? 'block' : 'none';
+                bgmBtn.classList.toggle('bgm-playing', isPlaying);
+                bgmBtn.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+                bgmBtn.setAttribute('aria-label', isPlaying ? 'Pause background music' : 'Play background music');
+                bgmBtn.title = isPlaying ? 'Pause background music' : 'Play background music';
             }
-        }
+
+            widget.bind(SC.Widget.Events.READY, function() {
+                widgetReady = true;
+                widget.setVolume(30);
+                if (wantsPlay) widget.play();   // honor a gesture that happened before READY
+            });
+            widget.bind(SC.Widget.Events.PLAY, function() { isPlaying = true; updateButton(); });
+            widget.bind(SC.Widget.Events.PAUSE, function() { isPlaying = false; updateButton(); });
+
+            bgmBtn.addEventListener('click', function() {
+                userInteracted = true;
+                wantsPlay = !isPlaying;
+                if (widgetReady) widget.toggle();
+            });
+
+            // Start music on the visitor's first interaction with the page (one time only).
+            function startBgmOnce() {
+                if (userInteracted) return;
+                userInteracted = true;
+                wantsPlay = true;
+                if (widgetReady) widget.play();
+            }
+            ['click', 'touchstart', 'keydown'].forEach(function(ev) {
+                document.addEventListener(ev, startBgmOnce, { once: true, passive: true });
+            });
+
+            updateButton();
+        });
     </script>
 
 </body>
