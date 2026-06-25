@@ -449,11 +449,13 @@
                 display: flex;
                 gap: 0;
             }
-            .nav-links a { 
-                margin-left: 8px; 
+            .nav-links a {
+                margin-left: 3px;
                 font-size: 0.7rem;
                 white-space: nowrap;
                 font-weight: 500;
+                display: inline-block;
+                padding: 11px 5px;   /* taller tap target (~44px) without widening the row */
             }
 
             .hero h1 { font-size: 2.2rem; }
@@ -479,6 +481,22 @@
             .bgm-control { bottom: 20px; right: 20px; width: 45px; height: 45px; }
         }
 
+        /* === Skip to content (a11y) === */
+        .skip-link {
+            position: fixed;
+            top: -60px;
+            left: 12px;
+            z-index: 2000;
+            background: var(--accent-color);
+            color: #000;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus { top: 12px; }
+
         /* === Keyboard focus visibility (a11y) === */
         a:focus-visible,
         button:focus-visible,
@@ -503,6 +521,8 @@
     </style>
 </head>
 <body>
+
+    <a href="#music" class="skip-link">Skip to content</a>
 
     <nav>
         <div class="logo">STEPHEN YOON</div>

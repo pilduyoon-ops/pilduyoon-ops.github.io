@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Page Not Found — Stephen Yoon</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        :root { --bg-color: #121212; --text-color: #ffffff; --accent-color: #1DB954; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+        .code {
+            font-size: clamp(5rem, 22vw, 9rem);
+            font-weight: 900;
+            line-height: 1;
+            margin: 0;
+            background: linear-gradient(135deg, var(--accent-color), #14833b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h1 { font-size: 1.6rem; margin: 10px 0 6px; }
+        p { color: #bbb; margin: 0 0 32px; max-width: 420px; line-height: 1.6; }
+        .home-btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .home-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(29,185,84,0.4); }
+        .home-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+        .links { margin-top: 28px; font-size: 0.9rem; }
+        .links a { color: #888; text-decoration: none; margin: 0 10px; }
+        .links a:hover { color: var(--accent-color); }
+    </style>
+</head>
+<body>
+    <p class="code">404</p>
+    <h1>This page hit a wrong note</h1>
+    <p>The page you're looking for doesn't exist or has moved. Let's get you back on track.</p>
+    <a class="home-btn" href="/">Back to Home</a>
+    <nav class="links">
+        <a href="/#music">Music</a>
+        <a href="/#marketing-lab">Marketing Lab</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
+    </nav>
+</body>
+</html>
