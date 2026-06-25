@@ -2,6 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive semiconductor heater pattern designer — sketch heater zones on a wafer grid and visualize the layout. An engineering tool by Stephen Yoon." />
+  <meta name="theme-color" content="#f8fafc" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="canonical" href="https://stephenyoon.com/semiconductorheater.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Semiconductor Heater Designer" />
+  <meta property="og:description" content="Sketch and visualize semiconductor heater patterns on a wafer grid." />
+  <meta property="og:image" content="https://stephenyoon.com/semiconductorgame.png" />
+  <meta property="og:url" content="https://stephenyoon.com/semiconductorheater.html" />
+  <meta name="twitter:card" content="summary_large_image" />
   <title>Semiconductor Heater Design - Pro V5</title>
   <style>
     :root {
@@ -189,12 +200,28 @@
     .modal-box .intro-section strong { color: #0f172a; font-size: 0.95rem; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
+    /* Canvas accepts touch input without the browser hijacking it for scroll/zoom */
+    #simCanvas { touch-action: none; max-width: 100%; }
+
+    .home-link { color: var(--text-sub); text-decoration: none; font-weight: 700; margin-right: 4px; }
+    .home-link:hover { color: var(--text-main); }
+
+    /* Mobile: stack the panes and allow the page to scroll */
+    @media (max-width: 768px) {
+      body { height: auto; overflow: auto; }
+      main { flex-direction: column; height: auto; padding: 10px; }
+      .visual-pane, .control-pane { flex: none; width: 100%; max-width: none; min-width: 0; box-sizing: border-box; }
+      .scroll-area { overflow-y: visible; }
+      header { flex-wrap: wrap; gap: 4px; }
+      header h1 { font-size: 1rem; }
+      #simCanvas { height: auto; }
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Semiconductor Heater Design <span class="badge">V5 Pro</span></h1>
+    <h1><a href="index.html" class="home-link" title="Back to Stephen Yoon home" aria-label="Back to home">←</a>Semiconductor Heater Design <span class="badge">V5 Pro</span></h1>
     <div style="font-size:0.85rem; color:var(--text-sub);">
       Stage: <b id="stageTitle">1. Basic</b>
     </div>
@@ -689,7 +716,8 @@
     }
 
     // --- INPUT HANDLER ---
-    canvas.addEventListener('mousedown', (e) => {
+    // pointerdown covers mouse, touch and pen so cell-toggle works on phones too.
+    canvas.addEventListener('pointerdown', (e) => {
       const rect = canvas.getBoundingClientRect();
       const sx = canvas.width / rect.width;
       const sy = canvas.height / rect.height;

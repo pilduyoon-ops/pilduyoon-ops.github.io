@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Stephen's Hungry Caterpillar — an early prototype of the Creative Flow game by Stephen Yoon.">
+    <meta name="theme-color" content="#121212">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="canonical" href="https://stephenyoon.com/Caterpillar.html">
     <title>Stephen's Hungry Caterpillar</title>
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
@@ -362,14 +366,17 @@
         // Mobile
         const lb=document.getElementById('leftBtn');
         const rb=document.getElementById('rightBtn');
-        const handleTouch = (btn, state) => {
-            btn.addEventListener('touchstart', (e)=>{e.preventDefault(); if(btn===lb) isTurningLeft=state; else isTurningRight=state;});
-            btn.addEventListener('touchend', (e)=>{e.preventDefault(); if(btn===lb) isTurningLeft=!state; else isTurningRight=!state;});
-            btn.addEventListener('mousedown', ()=>{if(btn===lb) isTurningLeft=state; else isTurningRight=state;});
-            btn.addEventListener('mouseup', ()=>{if(btn===lb) isTurningLeft=!state; else isTurningRight=!state;});
+        const handleTouch = (btn, side) => {
+            const set = (v) => { if(side==='left') isTurningLeft=v; else isTurningRight=v; };
+            btn.addEventListener('touchstart', (e)=>{e.preventDefault(); set(true);}, {passive:false});
+            btn.addEventListener('touchend', (e)=>{e.preventDefault(); set(false);}, {passive:false});
+            btn.addEventListener('touchcancel', ()=>{ set(false); });
+            btn.addEventListener('mousedown', ()=>{ set(true); });
+            btn.addEventListener('mouseup', ()=>{ set(false); });
+            btn.addEventListener('mouseleave', ()=>{ set(false); });
         };
-        handleTouch(lb, true);
-        handleTouch(rb, true);
+        handleTouch(lb, 'left');
+        handleTouch(rb, 'right');
 
 
         function update() {
